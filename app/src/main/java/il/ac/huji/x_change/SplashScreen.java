@@ -1,11 +1,17 @@
 package il.ac.huji.x_change;
 
 import android.content.Intent;
-import android.os.Handler;
+import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 
 public class SplashScreen extends ActionBarActivity {
@@ -17,24 +23,33 @@ public class SplashScreen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        new Handler().postDelayed(new Runnable() {
+        //initialize Parse
+        Resources resources = this.getResources();
+        String appID = resources.getString(R.string.parseAppID);
+        String clientID = resources.getString(R.string.parseClientID);
+        Parse.initialize(this, appID, clientID);
 
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
+//        ParseUser user = new ParseUser();
+//        user.setUsername("my name");
+//        user.setPassword("my pass");
+//        user.setEmail("email@example.com");
+//
+//        // other fields can be set just like with ParseObject
+//        user.put("phone", "650-555-0000");
+//
+//        user.signUpInBackground(new SignUpCallback() {
+//            public void done(ParseException e) {
+//                if (e == null) {
+//                    // Hooray! Let them use the app now.
+//                } else {
+//                    // Sign up didn't succeed. Look at the ParseException
+//                    // to figure out what went wrong
+//                }
+//            }
+//        });
 
-            @Override
-            public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, MainActivity.class);
-                startActivity(i);
+        new PrefetchData().execute();
 
-                // close this activity
-                finish();
-            }
-        }, SPLASH_TIME_OUT);
     }
 
     @Override
@@ -42,6 +57,59 @@ public class SplashScreen extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_splash_screen, menu);
         return true;
+    }
+
+    private class PrefetchData extends AsyncTask<Void, Void, Class> {
+
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            // before making http calls
+//
+//        }
+
+        @Override
+        protected Class doInBackground(Void... arg0) {
+            /*
+             * Will make http call here This call will download required data
+             * before launching the app
+             * example:
+             * 1. Downloading and storing in SQLite
+             * 2. Downloading images
+             * 3. Fetching and parsing the xml / json
+             * 4. Sending device information to server
+             * 5. etc.,
+             */
+            Class result;
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            if (currentUser != null) {
+                // user exist
+                result = MainActivity.class;
+            } else {
+                // show the signup or login screen
+                result = RegisterActivity.class;
+            }
+            try {
+                Thread.sleep(3000);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Class result) {
+            super.onPostExecute(result);
+            // After completing http call
+            // will close this activity and launch main activity
+            Intent i = new Intent(SplashScreen.this, result);
+            startActivity(i);
+            // close this activity
+            finish();
+        }
+
     }
 
     @Override

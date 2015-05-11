@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">X-Change</string>
 
+    <string name="parseAppID">MEmquUCRhxXbUAmfym1Uvjl56OKOyMMGPVnnzRFP</string>
+    <string name="parseClientID">lrdxbTU48ZRQV8wGbUHdHgHR60z8fmIjkNLZrtpC</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
