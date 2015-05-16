@@ -9,9 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.parse.SignUpCallback;
 
 
 public class SplashScreen extends ActionBarActivity {
@@ -25,8 +23,8 @@ public class SplashScreen extends ActionBarActivity {
 
         //initialize Parse
         Resources resources = this.getResources();
-        String appID = resources.getString(R.string.parseAppID);
-        String clientID = resources.getString(R.string.parseClientID);
+        String appID = resources.getString(R.string.parse_app_id);
+        String clientID = resources.getString(R.string.parse_client_id);
         Parse.initialize(this, appID, clientID);
 
 //        ParseUser user = new ParseUser();
@@ -84,10 +82,10 @@ public class SplashScreen extends ActionBarActivity {
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (currentUser != null) {
                 // user exist
-                result = MainActivity.class;
+                result = LoginActivity.class;
             } else {
                 // show the signup or login screen
-                result = RegisterActivity.class;
+                result = LoginActivity.class;
             }
             try {
                 Thread.sleep(3000);
