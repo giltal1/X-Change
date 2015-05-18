@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseUser;
@@ -82,7 +83,7 @@ public class SplashScreen extends ActionBarActivity {
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (currentUser != null) {
                 // user exist
-                result = LoginActivity.class;
+                result = MainActivity.class;
             } else {
                 // show the signup or login screen
                 result = LoginActivity.class;
@@ -92,6 +93,9 @@ public class SplashScreen extends ActionBarActivity {
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
+                Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(),
+                        Toast.LENGTH_SHORT);
+                toast.show();
             }
 
             return result;

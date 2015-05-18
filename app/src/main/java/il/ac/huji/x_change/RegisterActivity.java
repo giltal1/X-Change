@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,15 +41,23 @@ public class RegisterActivity extends ActionBarActivity {
                 EditText editText = (EditText) findViewById(R.id.reg_fullname);
                 String fullName = editText.getText().toString();
 
+                if (fullName.isEmpty()) {
+                    String emptyName = res.getString(R.string.name_is_empty);
+                    Toast toast = Toast.makeText(getApplicationContext(), emptyName,
+                            Toast.LENGTH_SHORT);
+                    //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
+                    toast.show();
+                    return;
+                }
+
                 editText = (EditText) findViewById(R.id.reg_email);
                 String email = editText.getText().toString();
 
                 if (!isEmailValid(email)) {
-                    //display Toast
                     String emailNotValid = res.getString(R.string.email_not_valid);
                     Toast toast = Toast.makeText(getApplicationContext(), emailNotValid,
                             Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
+                    //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
                     toast.show();
                     return;
                 }
@@ -60,28 +69,41 @@ public class RegisterActivity extends ActionBarActivity {
                     String passNotValid = res.getString(R.string.password_not_valid);
                     Toast toast = Toast.makeText(getApplicationContext(), passNotValid,
                             Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
+                    //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
                     toast.show();
                     return;
                 }
 
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    // do stuff with the user
+                    currentUser.logOut();
+                }
+
                 ParseUser user = new ParseUser();
-                user.put("Full Name", fullName);
                 user.setUsername(email);
                 user.setPassword(password);
+                user.put("Name", fullName);
 
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(ParseException e) {
                         if (e == null) {
                             // Hooray! Let them use the app now.
+                            Toast toast = Toast.makeText(getApplicationContext(), "sign up success",
+                                    Toast.LENGTH_SHORT);
+                            //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
+                            toast.show();
                             Intent i = new Intent(RegisterActivity.this, MainActivity.class);
                             startActivity(i);
-                            // close this activity
-                            finish();
                         } else {
                             // Sign up didn't succeed. Look at the ParseException
                             // to figure out what went wrong
-                            //TODO: learn to parse exception
+                            e.printStackTrace();
+                            //TODO: handle different exceptions
+                            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(),
+                                    Toast.LENGTH_SHORT);
+                            //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
+                            toast.show();
                         }
                     }
                 });

@@ -15,8 +15,8 @@
     <string name="email_not_valid">Email address isn\'t valid.\n
         Please enter a valid email address</string>
     <string name="password_not_valid">Password Should be at least 6 characters,\n
-        and contain digits and letters
-        </string>
+        and contain digits and letters</string>
+    <string name="name_is_empty">Please enter a name</string>
 
     <!-- General strings-->
     <string name="hello_world">Hello world!</string>
