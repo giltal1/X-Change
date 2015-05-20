@@ -1,11 +1,9 @@
-package il.ac.huji.x_change;
+package il.ac.huji.x_change.Activity;
 
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +18,8 @@ import com.parse.SignUpCallback;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import il.ac.huji.x_change.R;
 
 
 public class RegisterActivity extends ActionBarActivity {

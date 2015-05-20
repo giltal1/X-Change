@@ -1,4 +1,4 @@
-package il.ac.huji.x_change;
+package il.ac.huji.x_change.Activity;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import il.ac.huji.x_change.R;
 
 
 public class LoginActivity extends ActionBarActivity {

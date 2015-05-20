@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="il.ac.huji.x_change.SplashScreen">
+    tools:context="il.ac.huji.x_change.Activity.SplashScreen">
 
     <ImageView
         android:id="@+id/img_logo"

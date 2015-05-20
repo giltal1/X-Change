@@ -1,4 +1,4 @@
-package il.ac.huji.x_change;
+package il.ac.huji.x_change.Activity;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseUser;
+
+import il.ac.huji.x_change.R;
 
 
 public class SplashScreen extends ActionBarActivity {
