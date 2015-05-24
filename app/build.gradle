@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "il.ac.huji.x_change"
@@ -24,6 +24,8 @@ dependencies {
     compile fileTree(dir: 'libs/Parse-1.9.1/', include: 'Parse-*.jar')
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     compile 'com.parse.bolts:bolts-android:1.+'
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:recyclerview-v7:21.0.+'
+    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:recyclerview-v7:22.1.1'
+    compile 'com.google.android.gms:play-services:7.3.0'
+
 }
