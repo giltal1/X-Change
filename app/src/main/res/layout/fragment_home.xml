@@ -5,25 +5,32 @@
     android:orientation="vertical"
     tools:context="il.ac.huji.x_change.Activity.HomeFragment">
 
-    <TextView
-        android:id="@+id/home_label"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="45sp"
-        android:text="HOME"
-        android:textStyle="bold"/>
+    <!--<TextView-->
+        <!--android:id="@+id/home_label"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginTop="100dp"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:textSize="45sp"-->
+        <!--android:text="HOME"-->
+        <!--android:textStyle="bold"/>-->
 
-    <TextView
-        android:layout_below="@id/home_label"
-        android:layout_centerInParent="true"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="Edit fragment_home.xml to change the appearance" />
+    <!--<TextView-->
+        <!--android:layout_below="@id/home_label"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="12sp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:text="Edit fragment_home.xml to change the appearance" />-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:scrollbars="vertical" />
 
 </RelativeLayout>
