@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.Collections;
 import java.util.List;
@@ -54,14 +56,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        //        public TextView title;
-//        public ImageView icon;
-        public String test;
+        public TextView title;
+        public TextView distance;
+        public TextView rating;
+        public ImageView icon;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-//            title = (TextView) itemView.findViewById(R.id.title);
-//            icon = (ImageView) itemView.findViewById(R.id.icon);
+            title = (TextView) itemView.findViewById(R.id.conversion_title);
+            distance = (TextView) itemView.findViewById(R.id.conversion_distance);
+            rating = (TextView) itemView.findViewById(R.id.conversion_rating);
+            icon = (ImageView) itemView.findViewById(R.id.icon);
         }
     }
 }
