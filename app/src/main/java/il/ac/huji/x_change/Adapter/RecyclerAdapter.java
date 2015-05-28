@@ -30,6 +30,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
         this.data = data;
     }
 
+    public RecyclerAdapter(List<ConversionItem> data){
+        this.data = data;
+    }
+
     public void delete(int position) {
         data.remove(position);
         notifyItemRemoved(position);
@@ -38,20 +42,34 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.nav_drawer_row, parent, false);
-        RecyclerViewHolder holder = new RecyclerViewHolder(view);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.conversion_card_item, parent, false);
+        RecyclerViewHolder holder = new RecyclerViewHolder(v);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         ConversionItem current = data.get(position);
-        //holder.title.setText(current.getTitle());
+        holder.title.setText("From " + current.getFrom().toString() + "\nTo " + current.getTo().toString());
+        if(current.getDistance() > 1000) {
+            holder.distance.setText("Distance: " + current.getDistance()/1000 + " km away");
+        }
+        else {
+            holder.distance.setText("Distance: " + current.getDistance() + " m away");
+        }
+
+        holder.rating.setText("Rating: " + current.getRating());
+        holder.icon.setBackgroundResource(R.drawable.ic_profile);
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -66,7 +84,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
             title = (TextView) itemView.findViewById(R.id.conversion_title);
             distance = (TextView) itemView.findViewById(R.id.conversion_distance);
             rating = (TextView) itemView.findViewById(R.id.conversion_rating);
-            icon = (ImageView) itemView.findViewById(R.id.icon);
+            icon = (ImageView) itemView.findViewById(R.id.conversion_icon);
         }
     }
 }

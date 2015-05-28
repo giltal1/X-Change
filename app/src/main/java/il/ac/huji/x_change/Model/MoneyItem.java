@@ -8,9 +8,9 @@ public class MoneyItem {
     private String currency;
     private int amount;
 
-    public MoneyItem(String currency, int amount) {
-        this.currency = currency;
+    public MoneyItem(int amount, String currency) {
         this.amount = amount;
+        this.currency = currency;
     }
 
     public String getCurrency() {
@@ -27,5 +27,10 @@ public class MoneyItem {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(amount) + " " + currency;
     }
 }

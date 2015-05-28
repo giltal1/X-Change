@@ -9,8 +9,9 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="200dp"
         android:layout_margin="5dp"
+        card_view:cardElevation="7dp"
         card_view:cardCornerRadius="2dp"
         card_view:contentPadding="10dp">
 
@@ -25,8 +26,12 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingTop="24dp"
-                android:text="From 100$ to 400 NIS"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:text="From 100 USD\nTo 400 NIS"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/conversion_icon"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
             <TextView
                 android:id="@+id/conversion_distance"
@@ -49,6 +54,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <ImageView
+                android:id="@+id/conversion_icon"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_margin="16dp"
