@@ -58,7 +58,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_margin="16dp"
-                android:src="@drawable/ic_profile"
+                android:src="@drawable/ic_account_circle_black_48dp"
                 android:scaleType="fitCenter"
                 android:layout_alignParentRight="true"
                 />
@@ -69,19 +69,21 @@
                 android:orientation="horizontal"
                 android:layout_alignParentBottom="true">
 
-                <Button
+                <com.gc.materialdesign.views.ButtonFlat
                     android:id="@+id/conversion_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    android:background="#1E88E5"
                     android:text="Details"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-                <Button
+                <com.gc.materialdesign.views.ButtonFlat
                     android:id="@+id/conversion_contact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    android:background="#1E88E5"
                     android:text="Contact"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 

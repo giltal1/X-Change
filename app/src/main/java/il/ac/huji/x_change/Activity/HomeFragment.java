@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +47,13 @@ public class HomeFragment extends Fragment {
         data = new ArrayList<ConversionItem>();
         data.add(new ConversionItem(new MoneyItem(100, "USD"), new MoneyItem(400, "NIS"), 2500, 50));
         data.add(new ConversionItem(new MoneyItem(10, "EURO"), new MoneyItem(50, "NIS"), 700, 100));
+        data.add(new ConversionItem(new MoneyItem(40, "NIS"), new MoneyItem(400, "BHT"), 250, 0));
+        data.add(new ConversionItem(new MoneyItem(50, "STR"), new MoneyItem(600, "NIS"), 10000, 300));
+        data.add(new ConversionItem(new MoneyItem(30, "EURO"), new MoneyItem(150, "NIS"), 3500, 1));
         adapter = new RecyclerAdapter(data);
         rv.setAdapter(adapter);
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab.attachToRecyclerView(rv);
 
         return rootView;
     }
