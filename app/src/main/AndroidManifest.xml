@@ -5,8 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -24,8 +24,8 @@
         <activity
             android:name=".Activity.SplashScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,12 +35,12 @@
         <activity
             android:name=".Activity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:noHistory="true">
+            android:noHistory="true" >
         </activity>
         <activity
             android:name=".Activity.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:noHistory="true">
+            android:noHistory="true" >
         </activity>
 
         <meta-data
@@ -48,7 +48,16 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD3BjeAnFN-zjQ9gFkV5B0VUXvTclVTMjw"/>
+            android:value="AIzaSyD3BjeAnFN-zjQ9gFkV5B0VUXvTclVTMjw" />
+
+        <activity
+            android:name=".Activity.CurrencyActivity"
+            android:label="@string/title_activity_currency" >
+        </activity>
+        <activity
+            android:name=".Activity.NewConversionActivity"
+            android:label="@string/title_activity_new_conversion" >
+        </activity>
     </application>
 
 </manifest>

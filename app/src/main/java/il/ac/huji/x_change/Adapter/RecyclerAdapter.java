@@ -21,14 +21,14 @@ import il.ac.huji.x_change.R;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
 
     private List<ConversionItem> data = Collections.emptyList();
-    private LayoutInflater inflater;
-    private Context context;
-
-    public RecyclerAdapter(Context context, List<ConversionItem> data) {
-        this.context = context;
-        inflater = LayoutInflater.from(context);
-        this.data = data;
-    }
+//    private LayoutInflater inflater;
+//    private Context context;
+//
+//    public RecyclerAdapter(Context context, List<ConversionItem> data) {
+//        this.context = context;
+//        inflater = LayoutInflater.from(context);
+//        this.data = data;
+//    }
 
     public RecyclerAdapter(List<ConversionItem> data){
         this.data = data;

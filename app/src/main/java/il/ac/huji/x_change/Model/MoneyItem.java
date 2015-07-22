@@ -6,7 +6,7 @@ package il.ac.huji.x_change.Model;
 public class MoneyItem {
 
     private String currency;
-    private int amount;
+    private double amount;
 
     public MoneyItem(int amount, String currency) {
         this.amount = amount;
@@ -17,7 +17,7 @@ public class MoneyItem {
         return currency;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 

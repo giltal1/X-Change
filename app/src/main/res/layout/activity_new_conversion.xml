@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="il.ac.huji.x_change.Activity.NewConversionActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout android:id="@+id/from"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <EditText android:id="@+id/currency_amount_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="@string/from"
+            android:textSize="30sp"
+            android:inputType="phone"
+            android:digits="0123456789"/>
+
+        <TextView android:id="@+id/currency_code_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="USD"
+            android:textSize="30sp"
+            android:gravity="center"/>
+
+        <ImageView android:id="@+id/currency_flag_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/_unknown"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/layout_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/from"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <EditText android:id="@+id/currency_amount_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="@string/to"
+            android:textSize="30sp"
+            android:inputType="number|phone"/>
+
+        <TextView android:id="@+id/currency_code_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="NIS"
+            android:textSize="30sp"
+            android:gravity="center"/>
+
+        <ImageView android:id="@+id/currency_flag_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/_unknown"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

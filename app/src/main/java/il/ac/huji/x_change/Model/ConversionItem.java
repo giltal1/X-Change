@@ -5,29 +5,29 @@ package il.ac.huji.x_change.Model;
  */
 public class ConversionItem {
 
-    private MoneyItem from, to;
+    private CurrencyItem from, to;
     private int distance, rating;
 
-    public ConversionItem(MoneyItem from, MoneyItem to, int distance, int rating) {
+    public ConversionItem(CurrencyItem from, CurrencyItem to, int distance, int rating) {
         this.from = from;
         this.to = to;
         this.distance = distance;
         this.rating = rating;
     }
 
-    public MoneyItem getFrom() {
+    public CurrencyItem getFrom() {
         return from;
     }
 
-    public void setFrom(MoneyItem from) {
+    public void setFrom(CurrencyItem from) {
         this.from = from;
     }
 
-    public MoneyItem getTo() {
+    public CurrencyItem getTo() {
         return to;
     }
 
-    public void setTo(MoneyItem to) {
+    public void setTo(CurrencyItem to) {
         this.to = to;
     }
 

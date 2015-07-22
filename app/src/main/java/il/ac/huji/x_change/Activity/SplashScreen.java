@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -15,7 +16,7 @@ import com.parse.ParseUser;
 import il.ac.huji.x_change.R;
 
 
-public class SplashScreen extends ActionBarActivity {
+public class SplashScreen extends AppCompatActivity {
 
     private static int SPLASH_TIME_OUT = 3000;
 
@@ -91,7 +92,7 @@ public class SplashScreen extends ActionBarActivity {
                 result = LoginActivity.class;
             }
             try {
-                Thread.sleep(3000);
+                Thread.sleep(SPLASH_TIME_OUT);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();

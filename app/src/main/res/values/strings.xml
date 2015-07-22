@@ -45,6 +45,17 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- conversion card item -->
+    <string name="card_contact">Contact</string>
+    <string name="card_details">Details</string>
+
+    <!--New Conversion Activity-->
+    <string name="from">From</string>
+    <string name="to">To</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_currency">Choose Currency</string>
+    <string name="title_activity_currency_item_adapter">CurrencyItemAdapter</string>
+    <string name="title_activity_new_conversion">NewConversionActivity</string>
 </resources>
