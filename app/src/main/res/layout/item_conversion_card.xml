@@ -76,11 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:background="#1E88E5"
-<<<<<<< HEAD
                     android:text="@string/card_details"
-=======
-                    android:text="Details"
->>>>>>> origin/master
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                 <com.gc.materialdesign.views.ButtonFlat
@@ -89,11 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:background="#1E88E5"
-<<<<<<< HEAD
                     android:text="@string/card_contact"
-=======
-                    android:text="Contact"
->>>>>>> origin/master
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
             </LinearLayout>

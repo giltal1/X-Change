@@ -1,13 +1,15 @@
 package il.ac.huji.x_change.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,9 +22,11 @@ public class CurrencyItemAdapter extends RecyclerView.Adapter<CurrencyItemAdapte
     private List<CurrencyItem> currencyList = Collections.emptyList();
     private LayoutInflater inflater;
     private Context context;
+    private Activity activity;
 
-    public CurrencyItemAdapter(Context context, List<CurrencyItem> currencyList) {
+    public CurrencyItemAdapter(Activity activity, Context context, List<CurrencyItem> currencyList) {
         this.context = context;
+        this.activity = activity;
         inflater = LayoutInflater.from(context);
         this.currencyList = currencyList;
     }
@@ -44,8 +48,8 @@ public class CurrencyItemAdapter extends RecyclerView.Adapter<CurrencyItemAdapte
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.currency_item, parent, false);
-        Holder holder = new Holder(v);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_currency, parent, false);
+        Holder holder = new Holder(v, activity);
         return holder;
     }
 
@@ -55,11 +59,10 @@ public class CurrencyItemAdapter extends RecyclerView.Adapter<CurrencyItemAdapte
         String flag = currency.getFlagCode().toLowerCase();
         int resID = context.getResources().getIdentifier(flag, "drawable", context.getPackageName());
         if (resID != 0) {
-            holder.img.setImageResource(resID);
+            holder.currencyImage.setImageResource(resID);
         }
         holder.currencyCode.setText(currency.getCode());
         holder.currencyName.setText(currency.getName());
-        holder.countryName.setText(currency.getCountryName());
     }
 
     @Override
@@ -72,28 +75,34 @@ public class CurrencyItemAdapter extends RecyclerView.Adapter<CurrencyItemAdapte
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-
-
     public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        protected ImageView img;
+        protected ImageView currencyImage;
         protected TextView currencyCode;
         protected TextView currencyName;
-        protected TextView countryName;
+        protected Activity activity;
 
-        public Holder(View itemView) {
+        public Holder(View itemView, Activity activity) {
             super(itemView);
-            img = (ImageView) itemView.findViewById(R.id.currency_img);
+            this.activity = activity;
+            currencyImage = (ImageView) itemView.findViewById(R.id.currency_img);
             currencyCode = (TextView) itemView.findViewById(R.id.currency_code);
             currencyName = (TextView) itemView.findViewById(R.id.currency_name);
-            countryName = (TextView) itemView.findViewById(R.id.country_name);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            TextView tv = (TextView) v.findViewById(R.id.country_name);
-            Toast.makeText(context, tv.getText().toString() + " is chosen", Toast.LENGTH_SHORT).show();
+            TextView currencyCode = (TextView) v.findViewById(R.id.currency_code);
+            ImageView currencyImage = (ImageView) v.findViewById(R.id.currency_img);
+            currencyImage.buildDrawingCache();
+            Bitmap image = currencyImage.getDrawingCache();
+
+            Intent intent = new Intent();
+            intent.putExtra("currencyCode", currencyCode.getText().toString());
+            intent.putExtra("currencyImage", image);
+            activity.setResult(Activity.RESULT_OK, intent);
+            activity.finish();
         }
     }
 }

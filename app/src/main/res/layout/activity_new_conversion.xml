@@ -8,67 +8,142 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <LinearLayout android:id="@+id/from"
+    <LinearLayout android:id="@+id/layout_from"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="2">
 
         <EditText android:id="@+id/currency_amount_from"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:hint="@string/from"
             android:textSize="30sp"
-            android:inputType="phone"
-            android:digits="0123456789"/>
+            android:inputType="numberDecimal|phone"
+            android:digits="0123456789." />
 
-        <TextView android:id="@+id/currency_code_from"
-            android:layout_width="wrap_content"
+        <LinearLayout android:id="@+id/from_pick"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="USD"
-            android:textSize="30sp"
-            android:gravity="center"/>
+            android:weightSum="2">
 
-        <ImageView android:id="@+id/currency_flag_from"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/_unknown"/>
+            <TextView android:id="@+id/currency_code_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="USD"
+                android:textSize="30sp"
+                android:gravity="center"/>
+
+            <ImageView android:id="@+id/currency_flag_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/us"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout android:id="@+id/layout_to"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/from"
+        android:layout_below="@id/layout_from"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="2">
 
         <EditText android:id="@+id/currency_amount_to"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:hint="@string/to"
             android:textSize="30sp"
-            android:inputType="number|phone"/>
+            android:inputType="numberDecimal|phone"
+            android:digits="0123456789."/>
 
-        <TextView android:id="@+id/currency_code_to"
-            android:layout_width="wrap_content"
+        <LinearLayout android:id="@+id/to_pick"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="NIS"
-            android:textSize="30sp"
-            android:gravity="center"/>
+            android:weightSum="2">
 
-        <ImageView android:id="@+id/currency_flag_to"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/_unknown"/>
+            <TextView android:id="@+id/currency_code_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="ILS"
+                android:textSize="30sp"
+                android:gravity="center"/>
+
+            <ImageView android:id="@+id/currency_flag_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/il"/>
+
+        </LinearLayout>
 
     </LinearLayout>
+
+    <TextView android:id="@+id/txt_official_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_to"
+        android:text="Official Rate"/>
+
+    <TextView android:id="@+id/txt_your_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_to"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:text="Your Rate"/>
+
+    <TextView android:id="@+id/official_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_official_rate"
+        android:text="N/A"
+        android:inputType="none"/>
+
+    <TextView android:id="@+id/your_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_your_rate"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:text="0.00"/>
+
+    <ImageView android:id="@+id/swap"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/layout_to"
+        android:layout_centerInParent="true"
+        android:src="@drawable/swap"/>
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:id="@+id/new_conversion_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:background="#3D5AFE"
+        android:text="OK"/>
+
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:id="@+id/new_conversion_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="#3D5AFE"
+        android:text="Cancel"/>
 
 </RelativeLayout>

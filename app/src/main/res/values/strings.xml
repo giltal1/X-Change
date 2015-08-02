@@ -40,10 +40,9 @@
     <string name="title_messages">Messages</string>
     <string name="title_friends">Friends</string>
     <string name="title_home">Home</string>
-
     <string name="title_activity_splash_screen">SplashScreen</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_register">Register</string>
 
     <!-- conversion card item -->
     <string name="card_contact">Contact</string>
@@ -57,5 +56,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_currency">Choose Currency</string>
     <string name="title_activity_currency_item_adapter">CurrencyItemAdapter</string>
-    <string name="title_activity_new_conversion">NewConversionActivity</string>
+    <string name="title_activity_new_conversion">New Conversion</string>
 </resources>
