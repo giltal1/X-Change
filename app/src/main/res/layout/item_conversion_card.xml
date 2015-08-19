@@ -9,7 +9,7 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
         card_view:cardElevation="7dp"
         card_view:cardCornerRadius="2dp"
@@ -53,42 +53,41 @@
                 android:text="rating: 150"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/conversion_icon"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_margin="16dp"
                 android:src="@drawable/ic_account_circle_black_48dp"
-                android:scaleType="fitCenter"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_alignParentBottom="true">-->
 
-                <com.gc.materialdesign.views.ButtonFlat
-                    android:id="@+id/conversion_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="#1E88E5"
-                    android:text="@string/card_details"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+                <!--<com.gc.materialdesign.views.ButtonFlat-->
+                    <!--android:id="@+id/conversion_details"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_margin="8dp"-->
+                    <!--android:background="#1E88E5"-->
+                    <!--android:text="@string/card_details"-->
+                    <!--android:textAppearance="?android:attr/textAppearanceSmall"/>-->
 
-                <com.gc.materialdesign.views.ButtonFlat
-                    android:id="@+id/conversion_contact"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="#1E88E5"
-                    android:text="@string/card_contact"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                <!--<com.gc.materialdesign.views.ButtonFlat-->
+                    <!--android:id="@+id/conversion_contact"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_margin="8dp"-->
+                    <!--android:background="#1E88E5"-->
+                    <!--android:text="@string/card_contact"-->
+                    <!--android:textAppearance="?android:attr/textAppearanceSmall" />-->
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

@@ -1,8 +1,8 @@
 package il.ac.huji.x_change.Activity;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,9 +16,10 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import il.ac.huji.x_change.R;
+import il.ac.huji.x_change.Service.MessageService;
 
 
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,10 @@ public class LoginActivity extends ActionBarActivity {
                                     Toast.LENGTH_SHORT);
                             //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
                             toast.show();
-                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(i);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+                            startService(serviceIntent);
+                            startActivity(intent);
                         } else {
                             // Sign in failed. Look at the ParseException to see what happened.
                             e.printStackTrace();

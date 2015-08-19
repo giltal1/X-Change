@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import il.ac.huji.x_change.Model.ConversionItem;
 import il.ac.huji.x_change.R;
 
@@ -19,14 +20,6 @@ import il.ac.huji.x_change.R;
 public class ConversionItemAdapter extends RecyclerView.Adapter<ConversionItemAdapter.RecyclerViewHolder> {
 
     private List<ConversionItem> data = Collections.emptyList();
-//    private LayoutInflater inflater;
-//    private Context context;
-//
-//    public ConversionItemAdapter(Context context, List<ConversionItem> data) {
-//        this.context = context;
-//        inflater = LayoutInflater.from(context);
-//        this.data = data;
-//    }
 
     public ConversionItemAdapter(List<ConversionItem> data){
         this.data = data;
@@ -50,10 +43,10 @@ public class ConversionItemAdapter extends RecyclerView.Adapter<ConversionItemAd
         ConversionItem current = data.get(position);
         holder.title.setText("From " + current.getAmountFrom() + " " + current.getFrom().getCode() + "\nTo " + current.getAmountTo() + " " + current.getTo().getCode());
         if(current.getDistance() > 1000) {
-            holder.distance.setText("Distance: " + current.getDistance()/1000 + " km away");
+            holder.distance.setText("Distance: " + (int) current.getDistance()/1000 + " km away");
         }
         else {
-            holder.distance.setText("Distance: " + current.getDistance() + " m away");
+            holder.distance.setText("Distance: " + (int) current.getDistance() + " m away");
         }
 
         holder.rating.setText("Rating: " + current.getRating());
@@ -75,14 +68,14 @@ public class ConversionItemAdapter extends RecyclerView.Adapter<ConversionItemAd
         public TextView title;
         public TextView distance;
         public TextView rating;
-        public ImageView icon;
+        public CircleImageView icon;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.conversion_title);
             distance = (TextView) itemView.findViewById(R.id.conversion_distance);
             rating = (TextView) itemView.findViewById(R.id.conversion_rating);
-            icon = (ImageView) itemView.findViewById(R.id.conversion_icon);
+            icon = (CircleImageView) itemView.findViewById(R.id.conversion_icon);
         }
     }
 }

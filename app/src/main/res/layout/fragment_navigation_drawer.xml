@@ -11,12 +11,34 @@
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/drawer_profile_image"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/ic_profile"
-            android:scaleType="fitCenter"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            app:border_width="2dp"
+            app:border_color="#FF000000" />
+
+        <TextView
+            android:id="@+id/drawer_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/drawer_profile_image"
+            android:layout_centerHorizontal="true"
+            android:text="name"
+            />
+
+        <TextView
+            android:id="@+id/drawer_profile_mail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/drawer_profile_name"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="mail"
+            />
 
     </RelativeLayout>
 

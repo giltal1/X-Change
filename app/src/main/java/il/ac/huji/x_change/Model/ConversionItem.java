@@ -9,9 +9,10 @@ public class ConversionItem {
 
     private BigDecimal amountFrom, amountTo;
     private CurrencyItem from, to;
-    private int distance, rating;
+    private float distance;
+    private int rating;
 
-    public ConversionItem(String amountFrom, CurrencyItem from, String amountTo, CurrencyItem to, int distance, int rating) {
+    public ConversionItem(String amountFrom, CurrencyItem from, String amountTo, CurrencyItem to, float distance, int rating) {
         this.amountFrom = new BigDecimal(amountFrom);
         this.from = from;
         this.amountTo = new BigDecimal(amountTo);
@@ -53,7 +54,7 @@ public class ConversionItem {
         this.to = to;
     }
 
-    public int getDistance() {
+    public float getDistance() {
         return distance;
     }
 

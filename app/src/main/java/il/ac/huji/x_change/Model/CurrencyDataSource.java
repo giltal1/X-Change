@@ -64,7 +64,7 @@ public class CurrencyDataSource {
         cursor.close();
         sortList(currencies);
         // return items list
-        if (currencies == null) {
+        if (currencies.isEmpty()) {
             return new ArrayList<CurrencyItem>();
         }
         else {

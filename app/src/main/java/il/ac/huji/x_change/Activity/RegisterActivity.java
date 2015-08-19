@@ -20,6 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import il.ac.huji.x_change.R;
+import il.ac.huji.x_change.Service.MessageService;
 
 
 public class RegisterActivity extends ActionBarActivity {
@@ -84,6 +85,7 @@ public class RegisterActivity extends ActionBarActivity {
                 user.setUsername(email);
                 user.setPassword(password);
                 user.put("Name", fullName);
+                user.put("Image", null);
 
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(ParseException e) {
@@ -93,7 +95,9 @@ public class RegisterActivity extends ActionBarActivity {
                                     Toast.LENGTH_SHORT);
                             //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
                             toast.show();
-                            Intent i = new Intent(RegisterActivity.this, MainActivity.class);
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+                            startService(serviceIntent);
                             startActivity(i);
                         } else {
                             // Sign up didn't succeed. Look at the ParseException

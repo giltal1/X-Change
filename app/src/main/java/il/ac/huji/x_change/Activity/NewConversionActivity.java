@@ -3,6 +3,7 @@ package il.ac.huji.x_change.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,9 +11,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +26,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.gc.materialdesign.views.ButtonRectangle;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -29,19 +44,45 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
+import il.ac.huji.x_change.Adapter.PlaceArrayAdapter;
+import il.ac.huji.x_change.Adapter.SpinnerAdapter;
 import il.ac.huji.x_change.Model.CurrencyDataSource;
 import il.ac.huji.x_change.Model.CurrencyItem;
 import il.ac.huji.x_change.R;
 
-public class NewConversionActivity extends AppCompatActivity {
+public class NewConversionActivity extends AppCompatActivity implements
+        GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks {
+
+    private static final String LOG_TAG = "NewConversionActivity";
+    private static final int GOOGLE_API_CLIENT_ID = 0;
+
+    private static final int CURRENT_LOCATION = 0;
+    private static final int CUSTOM_LOCATION = 1;
+    private static final int NO_LOCATION = 2;
+
+    private Location mLastLocation;
+    private GoogleApiClient mGoogleApiClient;
+    private PlaceArrayAdapter mPlaceArrayAdapter;
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
 
     private static final int PICK_FROM_CURRENCY_REQ = 1;
     private static final int PICK_TO_CURRENCY_REQ = 2;
     private final BigDecimal ERROR = new BigDecimal("-1");
 
     private BigDecimal rate = null;
+    private Location location = new Location("");
     private CurrencyDataSource db;
+
+    private AutoCompleteTextView actv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +105,15 @@ public class NewConversionActivity extends AppCompatActivity {
         //Open DB
         db = new CurrencyDataSource(this);
         db.open();
+
+        //build google api client
+        mGoogleApiClient = new GoogleApiClient.Builder(NewConversionActivity.this)
+                .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 
         EditText fromAmount = (EditText) findViewById(R.id.currency_amount_from);
         fromAmount.addTextChangedListener(new TextWatcher() {
@@ -158,7 +208,44 @@ public class NewConversionActivity extends AppCompatActivity {
             }
         });
 
-        ButtonRectangle okButton = (ButtonRectangle) findViewById(R.id.new_conversion_ok);
+        String[] items = getResources().getStringArray(R.array.location_spinner_labels);
+        List<String> data = new ArrayList<>();
+
+        for (int i = 0; i < items.length; i++) {
+            data.add(items[i]);
+        }
+
+        actv = (AutoCompleteTextView) findViewById(R.id.actv_location);
+        actv.setVisibility(View.GONE);
+        actv.setThreshold(3);
+        actv.setOnItemClickListener(mAutocompleteClickListener);
+        mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1,
+                BOUNDS_MOUNTAIN_VIEW, null);
+        actv.setAdapter(mPlaceArrayAdapter);
+
+        SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.support_simple_spinner_dropdown_item, data);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner_location);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(adapter.getCount());
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == CUSTOM_LOCATION) {
+                    actv.setVisibility(View.VISIBLE);
+                } else {
+                    actv.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        Button okButton = (Button) findViewById(R.id.new_conversion_ok);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +263,10 @@ public class NewConversionActivity extends AppCompatActivity {
                 String toCode = toCodeTV.getText().toString();
                 CurrencyItem toCurrency = db.getCurrencyByCode(toCode);
 
-                if (fromAmount.isEmpty() || toAmount.isEmpty()) {
+                Spinner spinner = (Spinner) findViewById(R.id.spinner_location);
+
+                if (fromAmount.isEmpty() || toAmount.isEmpty() ||
+                        spinner.getSelectedItemPosition() == NO_LOCATION) {
                     Toast.makeText(getApplicationContext(), "Please fill all fields",
                             Toast.LENGTH_SHORT).show();
                     return;
@@ -188,18 +278,34 @@ public class NewConversionActivity extends AppCompatActivity {
                 parseObj.put("fromCurrency", fromCurrency.getCode());
                 parseObj.put("toAmount", new BigDecimal(toAmount));
                 parseObj.put("toCurrency", toCurrency.getCode());
+                ParseGeoPoint point = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+                parseObj.put("location", point);
                 parseObj.saveInBackground();
                 finish();
             }
         });
 
-        ButtonRectangle cancelButton = (ButtonRectangle) findViewById(R.id.new_conversion_cancel);
+        Button cancelButton = (Button) findViewById(R.id.new_conversion_cancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+    }
+
+    private void getLocation() {
+        mLastLocation = LocationServices.FusedLocationApi
+                .getLastLocation(mGoogleApiClient);
+
+        if (mLastLocation != null) {
+            double latitude = mLastLocation.getLatitude();
+            double longitude = mLastLocation.getLongitude();
+            location.setLatitude(latitude);
+            location.setLongitude(longitude);
+//            Toast.makeText(getActivity(), "Latitude: " + latitude + ", Longitude: " + longitude,
+//                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -232,11 +338,15 @@ public class NewConversionActivity extends AppCompatActivity {
         }
     }
 
-    private void getRateFor(String from, String to, final boolean swap) {
+    private void getRateFor(final String from, final String to, final boolean swap) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20(%22" + from + to + "%22)&format=json&env=store://datatables.org/alltableswithkeys";
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        //String url = "http://apilayer.net/api/historical?access_key=" + getResources().getString(R.string.currencylayer_key) + "&currencies=" + from +  "," + to + "&date=" + dateFormat.format(cal.getTime()) + "format=1";
+        //String url = "https://openexchangerates.org/api/historical/" + dateFormat.format(cal.getTime()) + ".json?app_id=" + getResources().getString(R.string.openexchangerates_key);
         // Request a response from the provided URL.
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {
@@ -250,6 +360,8 @@ public class NewConversionActivity extends AppCompatActivity {
                             JSONObject results = query.getJSONObject("results");
                             JSONObject rates = results.getJSONObject("rate");
                             String newRate = rates.getString("Rate");
+//                            JSONObject quotes = response.getJSONObject("quotes");
+//                            String newRate = quotes.getString(from + to);
 
                             TextView officialRate = (TextView) findViewById(R.id.official_rate);
                             TextView yourRate = (TextView) findViewById(R.id.your_rate);
@@ -287,6 +399,71 @@ public class NewConversionActivity extends AppCompatActivity {
 
     }
 
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
+            final String placeId = String.valueOf(item.placeId);
+            Log.i(LOG_TAG, "Selected: " + item.description);
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mGetPlaceGeoPointCallback);
+            Log.i(LOG_TAG, "Fetching details for ID: " + item.placeId);
+        }
+    };
+
+    private ResultCallback<PlaceBuffer> mGetPlaceGeoPointCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                Log.e(LOG_TAG, "Place query did not complete. Error: " +
+                        places.getStatus().toString());
+                return;
+            }
+            // Selecting the first object buffer.
+            final Place place = places.get(0);
+            double latitude = mLastLocation.getLatitude();
+            double longitude = mLastLocation.getLongitude();
+            location.setLatitude(latitude);
+            location.setLongitude(longitude);
+        }
+    };
+    @Override
+    public void onConnected(Bundle bundle) {
+        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        Log.i(LOG_TAG, "Google Places API connected.");
+        getLocation();
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+                + connectionResult.getErrorCode());
+
+        Toast.makeText(this,
+                "Google Places API connection failed with error code:" +
+                        connectionResult.getErrorCode(),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mPlaceArrayAdapter.setGoogleApiClient(null);
+        mGoogleApiClient.connect();
+        Log.e(LOG_TAG, "Google Places API connection suspended.");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -298,6 +475,14 @@ public class NewConversionActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         db.close();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 
 }

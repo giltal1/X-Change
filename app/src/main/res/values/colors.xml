@@ -9,7 +9,12 @@
 
     <color name="btn_primary">#3f51b5</color>
     <color name="btn_primary_dark">#303f9f</color>
-    <color name="btn_ripple">#FF5252</color>
+    <color name="btn_ripple1">#FF5252</color>
     <color name="btn_accent">#C62828</color>
     <color name="btn_accent_pressed">#B71C1C</color>
+
+    <color name="off_white">#fffafafa</color>
+    <color name="sinch_purple">#ff63029d</color>
+    <color name="dark_gray">#ffb3b3b3</color>
+    <color name="very_dark_gray">#636363</color>
 </resources>

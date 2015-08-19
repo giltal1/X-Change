@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="il.ac.huji.x_change.Activity.FriendsFragment">
+    tools:context="il.ac.huji.x_change.Activity.AboutFragment">
 
     <TextView
         android:id="@+id/messages_label"

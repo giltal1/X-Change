@@ -43,6 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/from_flag_desc"
                 android:src="@drawable/us"/>
 
         </LinearLayout>
@@ -84,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="@string/to_flag_desc"
                 android:src="@drawable/il"/>
 
         </LinearLayout>
@@ -94,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_to"
-        android:text="Official Rate"/>
+        android:text="@string/official_rate"/>
 
     <TextView android:id="@+id/txt_your_rate"
         android:layout_width="wrap_content"
@@ -102,13 +104,13 @@
         android:layout_below="@id/layout_to"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:text="Your Rate"/>
+        android:text="@string/your_rate"/>
 
     <TextView android:id="@+id/official_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_official_rate"
-        android:text="N/A"
+        android:text="@string/na"
         android:inputType="none"/>
 
     <TextView android:id="@+id/your_rate"
@@ -117,33 +119,54 @@
         android:layout_below="@id/txt_your_rate"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:text="0.00"/>
+        android:text="@string/zero"/>
 
     <ImageView android:id="@+id/swap"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_below="@id/layout_to"
         android:layout_centerInParent="true"
+        android:contentDescription="@string/swap_desc"
         android:src="@drawable/swap"/>
 
-    <com.gc.materialdesign.views.ButtonRectangle
+    <ImageView android:id="@+id/img_location"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/swap"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:contentDescription="@string/location_desc"
+        android:src="@drawable/marker"/>
+
+    <Spinner android:id="@+id/spinner_location"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_location"
+        android:layout_centerHorizontal="true" />
+
+    <AutoCompleteTextView
+        android:id="@+id/actv_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinner_location"
+        android:hint="@string/actv_hint" />
+
+    <Button
         android:id="@+id/new_conversion_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:background="#3D5AFE"
-        android:text="OK"/>
+        android:text="@string/btn_ok"/>
 
-    <com.gc.materialdesign.views.ButtonRectangle
+    <Button
         android:id="@+id/new_conversion_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:background="#3D5AFE"
-        android:text="Cancel"/>
+        android:text="@string/btn_cancel"/>
 
 </RelativeLayout>

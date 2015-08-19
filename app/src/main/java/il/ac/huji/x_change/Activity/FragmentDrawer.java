@@ -1,7 +1,9 @@
 package il.ac.huji.x_change.Activity;
 
 import android.content.Context;
-import android.content.res.TypedArray;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -9,15 +11,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseUser;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import il.ac.huji.x_change.Adapter.NavigationDrawerAdapter;
 import il.ac.huji.x_change.Model.NavDrawerItem;
 import il.ac.huji.x_change.R;
@@ -67,7 +79,7 @@ public class FragmentDrawer extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflating view layout
-        View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        final View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
 
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
@@ -85,6 +97,52 @@ public class FragmentDrawer extends Fragment {
 
             }
         }));
+
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        TextView name = (TextView) layout.findViewById(R.id.drawer_profile_name);
+        name.setText(currentUser.get("Name").toString());
+
+        TextView mail = (TextView) layout.findViewById(R.id.drawer_profile_mail);
+        mail.setText(currentUser.getUsername().toString());
+
+
+        if (currentUser != null) {
+            if (currentUser.get("Image") != null) {
+                ParseFile file =  (ParseFile) currentUser.get("Image");
+                file.getDataInBackground(new GetDataCallback() {
+                    @Override
+                    public void done(byte[] bytes, ParseException e) {
+                        if (e == null) {
+                            Log.d("in GetDataCallback", "load photo");
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            CircleImageView image = (CircleImageView) layout.findViewById(R.id.drawer_profile_image);
+                            image.setImageBitmap(bitmap);
+                        }
+                        else {
+                            Log.e("GetDataInBackground", e.getMessage());
+                        }
+                    }
+                });
+            }
+            else {
+                Log.d("current user", "image is null");
+            }
+        }
+        else {
+            Log.d("current user", "current user is null");
+        }
+
+        CircleImageView image = (CircleImageView) layout.findViewById(R.id.drawer_profile_image);
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("OnClick", "profile image");
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return layout;
     }
@@ -146,7 +204,7 @@ public class FragmentDrawer extends Fragment {
                 public void onLongPress(MotionEvent e) {
                     View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
                     if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+                        clickListener.onLongClick(child, recyclerView.getChildAdapterPosition(child));
                     }
                 }
             });
@@ -157,13 +215,18 @@ public class FragmentDrawer extends Fragment {
 
             View child = rv.findChildViewUnder(e.getX(), e.getY());
             if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildPosition(child));
+                clickListener.onClick(child, rv.getChildAdapterPosition(child));
             }
             return false;
         }
 
         @Override
         public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
         }
     }
 

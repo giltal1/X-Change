@@ -1,9 +1,24 @@
 <resources>
+    <!--App name-->
     <string name="app_name">X-Change</string>
+
+    <!--Google loaction id-->
+    <string name="google_location_key">AIzaSyAHnbJ3_2CS1FslO8zJRyR1wl4oeTV2Cw0</string>
 
     <!-- Parse id's-->
     <string name="parse_app_id">MEmquUCRhxXbUAmfym1Uvjl56OKOyMMGPVnnzRFP</string>
     <string name="parse_client_id">lrdxbTU48ZRQV8wGbUHdHgHR60z8fmIjkNLZrtpC</string>
+    
+    <!--Sinch id's-->
+    <string name="sinch_hostname">sandbox.sinch.com</string>
+    <string name="sinch_key">98ac7853-c9ae-4de2-88a6-613afefb333b</string>
+    <string name="sinch_secret">LSwsC0EGBEWZV9I4I6F6Lw==</string>
+
+    <!--currencylayer id-->
+    <string name="currencylayer_key">b64c68d7f8b943563e94862bf704b33f</string>
+
+    <!--openexchangerates id-->
+    <string name="openexchangerates_key">44f9466047dc4280b53b883b0b9fd23d</string>
 
     <!-- Login & Registration strings-->
     <string name="link_to_register_text">New to X-Change? Register here</string>
@@ -26,21 +41,43 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
-    <string name="nav_item_home">Home</string>
-    <string name="nav_item_friends">Friends</string>
-    <string name="nav_item_notifications">Messages</string>
+    <!--location spinner headers-->
+    <string name="current_location">Current location</string>
+    <string name="enter_manually">Enter manually</string>
+    <string name="choose_location">Choose location</string>
+
+    <!--location spinner labels-->
+    <string-array name="location_spinner_labels">
+        <item>@string/current_location</item>
+        <item>@string/enter_manually</item>
+        <item>@string/choose_location</item>
+    </string-array>
+
+    <!-- nav item headers -->
+    <string name="nav_item_main">Main</string>
+    <string name="nav_item_new_conversion">New Conversion</string>
+    <string name="nav_item_messages">Messages</string>
+    <string name="nav_item_profile">Profile</string>
+    <string name="nav_item_about">About</string>
+    <string name="nav_item_share">Share</string>
+    <string name="nav_item_logout">Log Out</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
-        <item>@string/nav_item_home</item>
-        <item>@string/nav_item_friends</item>
-        <item>@string/nav_item_notifications</item>
+        <item>@string/nav_item_main</item>
+        <item>@string/nav_item_new_conversion</item>
+        <item>@string/nav_item_messages</item>
+        <item>@string/nav_item_profile</item>
+        <item>@string/nav_item_about</item>
+        <item>@string/nav_item_share</item>
+        <item>@string/nav_item_logout</item>
     </string-array>
 
+    <!--activity headers-->
+    <string name="title_main">Main</string>
+    <string name="title_about">About</string>
     <string name="title_messages">Messages</string>
-    <string name="title_friends">Friends</string>
-    <string name="title_home">Home</string>
-    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_splash_screen">Splash Screen</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_register">Register</string>
 
@@ -51,10 +88,32 @@
     <!--New Conversion Activity-->
     <string name="from">From</string>
     <string name="to">To</string>
+    <string name="actv_hint">Please enter your place</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="official_rate">Official Rate</string>
+    <string name="your_rate">Your Rate</string>
+    <string name="na">N/A</string>
+    <string name="zero">0.00</string>
+    <string name="swap_desc">Swap currencies</string>
+    <string name="location_desc">Location</string>
+    <string name="from_flag_desc">Flag from</string>
+    <string name="to_flag_desc">Flag to</string>
+
+    <!-- profile Activity-->
+    <string name="profile_name">Name: </string>
+    <string name="profile_email">Email: </string>
+
+    <!--About Fragment-->
+    <string name="about_description">X-Change is a new app who revolutionize the way we trade money\n
+    more details comming soon...</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_currency">Choose Currency</string>
     <string name="title_activity_currency_item_adapter">CurrencyItemAdapter</string>
     <string name="title_activity_new_conversion">New Conversion</string>
+    <string name="title_activity_profile">My Profile</string>
+    <string name="title_activity_messaging">MessagingActivity</string>
+    <string name="title_activity_list_users">ListUsersActivity</string>
 </resources>

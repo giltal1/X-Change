@@ -1,5 +1,6 @@
 package il.ac.huji.x_change.Activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,8 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.view.View;
-
-import com.gc.materialdesign.widgets.ProgressDialog;
 
 import java.util.ArrayList;
 
@@ -20,7 +19,6 @@ import il.ac.huji.x_change.R;
 public class CurrencyActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private ProgressDialog pDialog;
 
     private ArrayList<CurrencyItem> currencyList;
     private CurrencyItemAdapter adapter;
