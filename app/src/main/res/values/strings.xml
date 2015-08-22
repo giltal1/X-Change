@@ -62,6 +62,9 @@
     <string name="nav_item_share">Share</string>
     <string name="nav_item_logout">Log Out</string>
 
+    <string name="openDrawer">Open Drawer</string>
+    <string name="closeDrawer">Close Drawer</string>
+
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_main</item>
@@ -99,6 +102,8 @@
     <string name="location_desc">Location</string>
     <string name="from_flag_desc">Flag from</string>
     <string name="to_flag_desc">Flag to</string>
+    <string name="empty_amount">Please set a number</string>
+    <string name="empty_location">Please set a location</string>
 
     <!-- profile Activity-->
     <string name="profile_name">Name: </string>
@@ -106,7 +111,7 @@
 
     <!--About Fragment-->
     <string name="about_description">X-Change is a new app who revolutionize the way we trade money\n
-    more details comming soon...</string>
+    more details coming soon...</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

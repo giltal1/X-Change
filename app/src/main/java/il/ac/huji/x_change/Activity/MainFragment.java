@@ -125,8 +125,9 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                         locationOffer.setLatitude(obj.getParseGeoPoint("location").getLatitude());
                         locationOffer.setLongitude(obj.getParseGeoPoint("location").getLongitude());
                         float distance = location.distanceTo(locationOffer);
+                        int rating = obj.getInt("rating");
 
-                        ConversionItem item = new ConversionItem(fromAmount, fromCurrency, toAmount, toCurrency, distance, 0);
+                        ConversionItem item = new ConversionItem(fromAmount, fromCurrency, toAmount, toCurrency, distance, rating);
                         data.add(item);
                     }
 

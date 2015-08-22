@@ -47,31 +47,38 @@
             android:layout_height="wrap_content"
             android:padding="10dip"
             android:layout_below="@id/header">
-            <!--  Email Label -->
-            <!--<TextView android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:text="@string/email"/>-->
-            <EditText android:id="@+id/login_email"
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/login_email_wrapper"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:layout_marginBottom="20dip"
-                android:singleLine="true"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"/>
-            <!--  Password Label -->
-            <!--<TextView android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:text="@string/password"/>-->
-            <EditText android:id="@+id/login_password"
+                android:layout_height="wrap_content">
+
+                <EditText android:id="@+id/login_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:layout_marginBottom="20dip"
+                    android:singleLine="true"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/login_password_wrapper"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:singleLine="true"
-                android:hint="@string/password"
-                android:inputType="textPassword"/>
+                android:layout_height="wrap_content">
+
+                <EditText android:id="@+id/login_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:singleLine="true"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"/>
+
+            </android.support.design.widget.TextInputLayout>
+
             <!-- Login button -->
             <Button android:id="@+id/btnLogin"
                 android:layout_width="match_parent"

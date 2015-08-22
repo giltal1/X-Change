@@ -2,13 +2,11 @@ package il.ac.huji.x_change.Activity;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,38 +37,35 @@ public class RegisterActivity extends ActionBarActivity {
             public void onClick(View arg0) {
                 Resources res = getResources();
 
-                EditText editText = (EditText) findViewById(R.id.reg_fullname);
-                String fullName = editText.getText().toString();
+                TextInputLayout nameTIL = (TextInputLayout) findViewById(R.id.reg_fullname_wrapper);
+                String fullName = nameTIL.getEditText().getText().toString();
 
                 if (fullName.isEmpty()) {
                     String emptyName = res.getString(R.string.name_is_empty);
                     Toast toast = Toast.makeText(getApplicationContext(), emptyName,
                             Toast.LENGTH_SHORT);
-                    //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
                     toast.show();
                     return;
                 }
 
-                editText = (EditText) findViewById(R.id.reg_email);
-                String email = editText.getText().toString();
+                TextInputLayout emailTIL = (TextInputLayout) findViewById(R.id.reg_email_wrapper);
+                String email = emailTIL.getEditText().getText().toString();
 
                 if (!isEmailValid(email)) {
                     String emailNotValid = res.getString(R.string.email_not_valid);
                     Toast toast = Toast.makeText(getApplicationContext(), emailNotValid,
                             Toast.LENGTH_SHORT);
-                    //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
                     toast.show();
                     return;
                 }
 
-                editText = (EditText) findViewById(R.id.reg_password);
-                String password = editText.getText().toString();
+                TextInputLayout passwordTIL = (TextInputLayout) findViewById(R.id.reg_password_wrapper);
+                String password = passwordTIL.getEditText().getText().toString();
 
                 if (!isPasswordValid(password)) {
                     String passNotValid = res.getString(R.string.password_not_valid);
                     Toast toast = Toast.makeText(getApplicationContext(), passNotValid,
                             Toast.LENGTH_SHORT);
-                    //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
                     toast.show();
                     return;
                 }
@@ -86,6 +81,7 @@ public class RegisterActivity extends ActionBarActivity {
                 user.setPassword(password);
                 user.put("Name", fullName);
                 user.put("Image", null);
+                user.put("rating", 0);
 
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(ParseException e) {
@@ -93,7 +89,6 @@ public class RegisterActivity extends ActionBarActivity {
                             // Hooray! Let them use the app now.
                             Toast toast = Toast.makeText(getApplicationContext(), "sign up success",
                                     Toast.LENGTH_SHORT);
-                            //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
                             toast.show();
                             Intent i = new Intent(getApplicationContext(), MainActivity.class);
                             Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
@@ -125,28 +120,6 @@ public class RegisterActivity extends ActionBarActivity {
                 finish();
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_register, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     boolean isEmailValid(String email) {

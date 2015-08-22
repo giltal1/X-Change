@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -250,25 +252,39 @@ public class NewConversionActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 //Get from
-                EditText fromAmountET = (EditText) findViewById(R.id.currency_amount_from);
-                String fromAmount = fromAmountET.getText().toString();
+                TextInputLayout fromAmountTIL = (TextInputLayout) findViewById(R.id.currency_amount_from_wrapper);
+                String fromAmount = fromAmountTIL.getEditText().getText().toString();
                 TextView fromCodeTV = (TextView) findViewById(R.id.currency_code_from);
                 String fromCode = fromCodeTV.getText().toString();
                 CurrencyItem fromCurrency = db.getCurrencyByCode(fromCode);
 
                 //Get to
-                EditText toAmountET = (EditText) findViewById(R.id.currency_amount_to);
-                String toAmount = toAmountET.getText().toString();
+                TextInputLayout toAmountTIL = (TextInputLayout) findViewById(R.id.currency_amount_to_wrapper);
+                String toAmount = toAmountTIL.getEditText().toString();
                 TextView toCodeTV = (TextView) findViewById(R.id.currency_code_to);
                 String toCode = toCodeTV.getText().toString();
                 CurrencyItem toCurrency = db.getCurrencyByCode(toCode);
 
                 Spinner spinner = (Spinner) findViewById(R.id.spinner_location);
 
-                if (fromAmount.isEmpty() || toAmount.isEmpty() ||
-                        spinner.getSelectedItemPosition() == NO_LOCATION) {
-                    Toast.makeText(getApplicationContext(), "Please fill all fields",
-                            Toast.LENGTH_SHORT).show();
+                boolean valid = true;
+                if (fromAmount.isEmpty()) {
+                    fromAmountTIL.setError(getResources().getString(R.string.empty_amount));
+                    valid = false;
+                }
+                if (toAmount.isEmpty()) {
+                    toAmountTIL.setError(getResources().getString(R.string.empty_amount));
+                    valid = false;
+                }
+
+                if (spinner.getSelectedItemPosition() == NO_LOCATION) {
+                    Snackbar.make(findViewById(android.R.id.content),
+                            getResources().getString(R.string.empty_location),
+                            Snackbar.LENGTH_LONG).show();
+                    valid = false;
+                }
+
+                if (!valid) {
                     return;
                 }
 
@@ -280,6 +296,7 @@ public class NewConversionActivity extends AppCompatActivity implements
                 parseObj.put("toCurrency", toCurrency.getCode());
                 ParseGeoPoint point = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
                 parseObj.put("location", point);
+                parseObj.put("rating", ParseUser.getCurrentUser().getInt("rating"));
                 parseObj.saveInBackground();
                 finish();
             }

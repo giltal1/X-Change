@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+    <item
+        android:id="@+id/nav_item_main"
+        android:checked="false"
+        android:icon="@drawable/ic_list_black_24dp"
+        android:title="@string/nav_item_main" />
+
+    <item
+        android:id="@+id/nav_item_new_conversion"
+        android:checked="false"
+        android:icon="@drawable/ic_add_circle_black_24dp"
+        android:title="@string/nav_item_new_conversion" />
+
+    <item
+        android:id="@+id/nav_item_messages"
+        android:checked="false"
+        android:icon="@drawable/ic_message_black_24dp"
+        android:title="@string/nav_item_messages" />
+
+    <item
+        android:id="@+id/nav_item_profile"
+        android:checked="false"
+        android:icon="@drawable/ic_account_circle_black_48dp"
+        android:title="@string/nav_item_profile" />
+
+    <item
+        android:id="@+id/nav_item_about"
+        android:checked="false"
+        android:icon="@drawable/ic_info_outline_black_24dp"
+        android:title="@string/nav_item_about" />
+
+    <item
+        android:id="@+id/nav_item_share"
+        android:checked="false"
+        android:icon="@drawable/ic_share_black_24dp"
+        android:title="@string/nav_item_share" />
+
+    <item
+        android:id="@+id/nav_item_logout"
+        android:checked="false"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"
+        android:title="@string/nav_item_logout" />
+
+    </group>
+</menu>

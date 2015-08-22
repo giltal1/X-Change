@@ -1,49 +1,30 @@
 package il.ac.huji.x_change.Activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.parse.Parse;
 import com.parse.ParseUser;
 
 import il.ac.huji.x_change.R;
-import il.ac.huji.x_change.Service.MessageService;
 
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 3000;
+    private static int SPLASH_TIME_OUT = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        //initialize Parse
-        Resources resources = this.getResources();
-        String appID = resources.getString(R.string.parse_app_id);
-        String clientID = resources.getString(R.string.parse_client_id);
-        Parse.initialize(this, appID, clientID);
-
-        new PrefetchData().execute();
+        new checkConnection().execute();
 
     }
 
-    private class PrefetchData extends AsyncTask<Void, Void, Class> {
-
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            // before making http calls
-//
-//        }
+    private class checkConnection extends AsyncTask<Void, Void, Class> {
 
         @Override
         protected Class doInBackground(Void... arg0) {

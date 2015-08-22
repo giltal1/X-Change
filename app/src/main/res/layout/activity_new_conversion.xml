@@ -15,25 +15,33 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <EditText android:id="@+id/currency_amount_from"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/currency_amount_from_wrapper"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/from"
-            android:textSize="30sp"
-            android:inputType="numberDecimal|phone"
-            android:digits="0123456789." />
+            android:layout_weight="1">
+
+            <EditText android:id="@+id/currency_amount_from"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/from"
+                android:textSize="30sp"
+                android:inputType="numberDecimal|phone"
+                android:digits="0123456789." />
+
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout android:id="@+id/from_pick"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_weight="1"
             android:weightSum="2">
 
             <TextView android:id="@+id/currency_code_from"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:text="USD"
                 android:textSize="30sp"
@@ -57,25 +65,33 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <EditText android:id="@+id/currency_amount_to"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/currency_amount_to_wrapper"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/to"
-            android:textSize="30sp"
-            android:inputType="numberDecimal|phone"
-            android:digits="0123456789."/>
+            android:layout_weight="1">
+
+            <EditText android:id="@+id/currency_amount_to"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/to"
+                android:textSize="30sp"
+                android:inputType="numberDecimal|phone"
+                android:digits="0123456789."/>
+
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout android:id="@+id/to_pick"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_weight="1"
             android:weightSum="2">
 
             <TextView android:id="@+id/currency_code_to"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:text="ILS"
                 android:textSize="30sp"
