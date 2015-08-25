@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -121,10 +122,10 @@ public class ListUsersActivity extends AppCompatActivity {
                 Boolean success = intent.getBooleanExtra("success", false);
                 progressDialog.dismiss();
                 if (!success) {
-                    Toast.makeText(getApplicationContext(), "Messaging service failed to start", Toast.LENGTH_LONG).show();
+                    Log.d(getCallingActivity().toString(), "Messaging service failed to start");
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Messaging service started", Toast.LENGTH_LONG).show();
+                    Log.d(getCallingActivity().toString(), "Messaging service started");
                 }
             }
         };

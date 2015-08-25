@@ -5,19 +5,17 @@
     android:orientation="vertical"
     tools:context="il.ac.huji.x_change.Activity.AboutFragment">
 
-    <TextView
-        android:id="@+id/friends_label"
+    <ImageView
+        android:id="@+id/about_logo"
         android:layout_alignParentTop="true"
         android:layout_marginTop="100dp"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="45sp"
-        android:text="@string/title_about"
-        android:textStyle="bold"/>
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo_new"/>
 
     <TextView
-        android:layout_below="@id/friends_label"
+        android:layout_below="@id/about_logo"
         android:layout_centerInParent="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

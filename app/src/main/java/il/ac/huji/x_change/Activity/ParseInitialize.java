@@ -16,6 +16,7 @@ public class ParseInitialize extends Application {
         super.onCreate();
 
         //initialize Parse
+        Parse.enableLocalDatastore(this);
         String appID = getResources().getString(R.string.parse_app_id);
         String clientID = getResources().getString(R.string.parse_client_id);
         Parse.initialize(this, appID, clientID);

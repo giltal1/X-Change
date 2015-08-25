@@ -1,6 +1,7 @@
 package il.ac.huji.x_change.Model;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 
 /**
  * Created by ulamadm on 25/05/2015.
@@ -69,4 +70,18 @@ public class ConversionItem {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+    public static Comparator<ConversionItem> Distance
+            = new Comparator<ConversionItem>() {
+
+        public int compare(ConversionItem item1, ConversionItem item2) {
+
+            float distance1 = item1.getDistance();
+            float distance2 = item2.getDistance();
+
+            //ascending order
+            return (int) (distance1 - distance2);
+        }
+    };
+
 }

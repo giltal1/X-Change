@@ -33,11 +33,13 @@
         </activity>
         <activity
             android:name=".Activity.LoginActivity"
+            android:theme="@style/MyMaterialTheme.Login"
             android:label="@string/title_activity_login"
             android:noHistory="true" >
         </activity>
         <activity
             android:name=".Activity.RegisterActivity"
+            android:theme="@style/MyMaterialTheme.Login"
             android:label="@string/title_activity_register"
             android:noHistory="true" >
         </activity>

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.parse.ParseUser;
 
 import il.ac.huji.x_change.R;
+import il.ac.huji.x_change.Service.MessageService;
 
 
 public class SplashScreen extends AppCompatActivity {
@@ -63,12 +64,8 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         protected void onPostExecute(Class result) {
             super.onPostExecute(result);
-            // After completing http call
-            // will close this activity and launch main activity
-            Intent i = new Intent(SplashScreen.this, result);
+            Intent i = new Intent(getApplicationContext(), result);
             startActivity(i);
-            // close this activity
-            finish();
         }
 
     }

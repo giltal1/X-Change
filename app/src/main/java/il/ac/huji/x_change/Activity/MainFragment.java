@@ -11,21 +11,29 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import il.ac.huji.x_change.Adapter.ConversionItemAdapter;
+import il.ac.huji.x_change.Model.Constants;
 import il.ac.huji.x_change.Model.ConversionItem;
 import il.ac.huji.x_change.Model.CurrencyDataSource;
 import il.ac.huji.x_change.Model.CurrencyItem;
@@ -35,6 +43,10 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = MainFragment.class.getSimpleName();
+    private static final int REQ_SORT_CODE = 1;
+    private static final int REQ_SEARCH_CODE = 2;
+
+    private static int SORT_PARAM = Constants.SORT_DEFAULT;
 
     private List<ConversionItem> data;
     private ConversionItemAdapter adapter;
@@ -53,6 +65,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
     }
 
@@ -83,7 +96,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                fetchSuggestions();
+                fetchSuggestions(SORT_PARAM);
             }
         });
 
@@ -91,7 +104,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
-                fetchSuggestions();
+                fetchSuggestions(SORT_PARAM);
             }
         });
 
@@ -107,10 +120,27 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         return rootView;
     }
 
-    private void fetchSuggestions() {
+    private void fetchSuggestions(final int order) {
         data.clear();
+        adapter.notifyDataSetChanged();
+        swipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.yellow, R.color.green, R.color.blue);
         swipeRefreshLayout.setRefreshing(true);
         ParseQuery query = ParseQuery.getQuery("Suggestions");
+        ParseGeoPoint userLocation;
+        switch (order) {
+            case Constants.SORT_DEFAULT:
+                userLocation = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
+                query.whereNear("location", userLocation);
+                query.addDescendingOrder("rating");
+                break;
+            case Constants.SORT_DISTANCE:
+                userLocation = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
+                query.whereNear("location", userLocation);
+                break;
+            case Constants.SORT_RATING:
+                query.addAscendingOrder("rating");
+                break;
+        }
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> suggestions, ParseException e) {
@@ -131,6 +161,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                         data.add(item);
                     }
 
+                    if (order == Constants.SORT_DISTANCE)
+                        Collections.sort(data, ConversionItem.Distance);
                     adapter.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);
 
@@ -154,6 +186,53 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 //                    Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        MyDialogFragment dialogFragment = new MyDialogFragment();
+        switch (item.getItemId()) {
+            case R.id.action_sort:
+                dialogFragment.setTargetFragment(MainFragment.this, REQ_SORT_CODE);
+                break;
+            case R.id.action_search:
+                dialogFragment.setTargetFragment(MainFragment.this, REQ_SEARCH_CODE);
+                break;
+        }
+        dialogFragment.show(getFragmentManager(), "");
+        dialogFragment.setCancelable(false);
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Toast.makeText(getActivity(), "Result: " + resultCode,
+                Toast.LENGTH_SHORT).show();
+        if (requestCode == REQ_SORT_CODE) {
+            switch (resultCode) {
+                case Constants.SORT_DEFAULT:
+                    SORT_PARAM = resultCode;
+                    break;
+                case Constants.SORT_DISTANCE:
+                    SORT_PARAM = resultCode;
+                    break;
+                case Constants.SORT_RATING:
+                    SORT_PARAM = resultCode;
+                    break;
+                default:
+                    return;
+            }
+            fetchSuggestions(SORT_PARAM);
+        }
+        if (requestCode == REQ_SEARCH_CODE) {
+            //fill later
+        }
+    }
+
 
     @Override
     public void onStart() {
@@ -192,8 +271,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
     @Override
     public void onConnected(Bundle arg0) {
-
-        // Once connected with google api, get the location
         getLocation();
     }
 

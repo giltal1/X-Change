@@ -7,6 +7,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import il.ac.huji.x_change.Service.MessageService;
 
 public class RegisterActivity extends ActionBarActivity {
 
+    private ProgressBar spinner;
     private static final String PASSWORD_PATTERN =
             "((?=.*\\d)(?=.*[A-Za-z]).{6,20})";
 
@@ -31,10 +33,16 @@ public class RegisterActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        spinner = (ProgressBar) findViewById(R.id.register_spinner);
+        spinner.setVisibility(View.GONE);
+        spinner.setIndeterminate(true);
+
         Button regButton = (Button) findViewById(R.id.btnRegister);
         regButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
+
+                spinner.setVisibility(View.VISIBLE);
                 Resources res = getResources();
 
                 TextInputLayout nameTIL = (TextInputLayout) findViewById(R.id.reg_fullname_wrapper);
@@ -45,6 +53,7 @@ public class RegisterActivity extends ActionBarActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), emptyName,
                             Toast.LENGTH_SHORT);
                     toast.show();
+                    spinner.setVisibility(View.GONE);
                     return;
                 }
 
@@ -56,6 +65,7 @@ public class RegisterActivity extends ActionBarActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), emailNotValid,
                             Toast.LENGTH_SHORT);
                     toast.show();
+                    spinner.setVisibility(View.GONE);
                     return;
                 }
 
@@ -67,6 +77,7 @@ public class RegisterActivity extends ActionBarActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), passNotValid,
                             Toast.LENGTH_SHORT);
                     toast.show();
+                    spinner.setVisibility(View.GONE);
                     return;
                 }
 
@@ -85,14 +96,13 @@ public class RegisterActivity extends ActionBarActivity {
 
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(ParseException e) {
+                        spinner.setVisibility(View.GONE);
                         if (e == null) {
                             // Hooray! Let them use the app now.
                             Toast toast = Toast.makeText(getApplicationContext(), "sign up success",
                                     Toast.LENGTH_SHORT);
                             toast.show();
                             Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
-                            startService(serviceIntent);
                             startActivity(i);
                         } else {
                             // Sign up didn't succeed. Look at the ParseException

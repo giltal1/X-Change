@@ -6,9 +6,10 @@
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
     <color name="colorAccent">#8C9EFF</color>
+    <color name="loginWindowBackground">#5C6BC0</color>
 
-    <color name="btn_primary">#3f51b5</color>
-    <color name="btn_primary_dark">#303f9f</color>
+    <color name="btn_primary">#3949AB</color>
+    <color name="btn_primary_dark">#1A237E</color>
     <color name="btn_ripple">#FF5252</color>
     <color name="btn_accent">#C62828</color>
     <color name="btn_accent_pressed">#B71C1C</color>
@@ -17,4 +18,12 @@
     <color name="sinch_purple">#ff63029d</color>
     <color name="dark_gray">#ffb3b3b3</color>
     <color name="very_dark_gray">#636363</color>
+
+    <!--swipe refresh colors-->
+    <color name="red">#FF0000</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="blue">#0000FF</color>
+    <color name="green">#008000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="iron">#CCCCCC</color>
 </resources>

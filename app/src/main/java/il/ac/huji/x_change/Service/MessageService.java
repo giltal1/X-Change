@@ -2,7 +2,6 @@ package il.ac.huji.x_change.Service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
@@ -30,25 +29,27 @@ public class MessageService extends Service implements SinchClientListener {
     private final MessageServiceInterface serviceInterface = new MessageServiceInterface();
     private SinchClient sinchClient = null;
     private MessageClient messageClient = null;
-    private String currentUserId;
     private LocalBroadcastManager broadcaster;
     private Intent broadcastIntent = new Intent("il.ac.huji.x_change.Activity.ListUsersActivity");
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Resources resources = this.getResources();
-        APP_KEY = resources.getString(R.string.sinch_key);
-        APP_SECRET = resources.getString(R.string.sinch_secret);
-        ENVIRONMENT = resources.getString(R.string.sinch_hostname);
+        APP_KEY = getResources().getString(R.string.sinch_key);
+        APP_SECRET = getResources().getString(R.string.sinch_secret);
+        ENVIRONMENT = getResources().getString(R.string.sinch_hostname);
 
         //get the current user id from Parse
-        currentUserId = ParseUser.getCurrentUser().getObjectId();
+        String currentUserId = ParseUser.getCurrentUser().getObjectId();
         if (currentUserId != null && !isSinchClientStarted()) {
             startSinchClient(currentUserId);
         }
         broadcaster = LocalBroadcastManager.getInstance(this);
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private boolean isSinchClientStarted() {
+        return sinchClient != null && sinchClient.isStarted();
     }
 
     public void startSinchClient(String username) {
@@ -70,9 +71,7 @@ public class MessageService extends Service implements SinchClientListener {
         sinchClient.checkManifest();
         sinchClient.start();
     }
-    private boolean isSinchClientStarted() {
-        return sinchClient != null && sinchClient.isStarted();
-    }
+
 
     //The next 5 methods are for the sinch client listener
 

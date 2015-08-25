@@ -5,15 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -29,9 +30,10 @@ import il.ac.huji.x_change.Service.MessageService;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
+    private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private MenuItem searchMenuItem, sortMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Initializing Toolbar and setting it as the actionbar
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
         {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()){
                     case R.id.nav_item_main:
+                        //setMenuItems(true);
                         fragment = new MainFragment();
                         title = getString(R.string.title_main);
                         break;
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(getApplicationContext(), ProfileActivity.class);
                         break;
                     case R.id.nav_item_about:
+                        //setMenuItems(false);
                         fragment = new AboutFragment();
                         title = getString(R.string.title_about);
                         break;
@@ -132,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initializing Drawer Layout and ActionBarToggle
         drawerLayout = (DrawerLayout) findViewById(R.id.nav_drawer);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.openDrawer, R.string.closeDrawer){
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer){
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -200,5 +204,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//
+//        searchMenuItem = menu.findItem(R.id.action_search);
+//        sortMenuItem = menu.findItem(R.id.action_sort);
+//
+//        return true;
+//    }
+//
+//    private void setMenuItems(boolean setter) {
+//        searchMenuItem.setVisible(setter);
+//        sortMenuItem.setVisible(setter);
+//    }
 
 }
