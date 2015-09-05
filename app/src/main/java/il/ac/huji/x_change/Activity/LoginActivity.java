@@ -56,7 +56,9 @@ public class LoginActivity extends AppCompatActivity {
                             //toast.setGravity(Gravity.CENTER_HORIZONTAL,0,0);
                             toast.show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
                             startActivity(intent);
+                            startService(serviceIntent);
                         } else {
                             // Sign in failed. Look at the ParseException to see what happened.
                             e.printStackTrace();
@@ -78,8 +80,8 @@ public class LoginActivity extends AppCompatActivity {
         registerScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Switching to Register screen
-                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(i);
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -1,9 +1,17 @@
 package il.ac.huji.x_change.Activity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
@@ -21,24 +29,60 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        new checkConnection().execute();
-
+        if (checkConnection() && checkLocation()) {
+            new checkUserLogin().execute();
+        }
     }
 
-    private class checkConnection extends AsyncTask<Void, Void, Class> {
+    private boolean checkConnection() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (!isConnected) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.connect_dialog_title);
+            builder.setMessage(R.string.connect_dialog_msg);
+            builder.setPositiveButton(R.string.connect_dialog_btn, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    finish();
+                }
+            });
+            builder.setCancelable(false);
+            builder.show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkLocation() {
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        boolean gpsEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean networkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        boolean isLocationOn = gpsEnabled || networkEnabled;
+        if (!isLocationOn) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.location_dialog_title);
+            builder.setMessage(R.string.location_dialog_msg);
+            builder.setPositiveButton(R.string.location_dialog_btn, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    finish();
+                }
+            });
+            builder.setCancelable(false);
+            builder.show();
+            return false;
+        }
+        return true;
+    }
+
+    private class checkUserLogin extends AsyncTask<Void, Void, Class> {
 
         @Override
         protected Class doInBackground(Void... arg0) {
-            /*
-             * Will make http call here This call will download required data
-             * before launching the app
-             * example:
-             * 1. Downloading and storing in SQLite
-             * 2. Downloading images
-             * 3. Fetching and parsing the xml / json
-             * 4. Sending device information to server
-             * 5. etc.,
-             */
             Class result;
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (currentUser != null) {
@@ -64,8 +108,10 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         protected void onPostExecute(Class result) {
             super.onPostExecute(result);
-            Intent i = new Intent(getApplicationContext(), result);
-            startActivity(i);
+            Intent intent = new Intent(getApplicationContext(), result);
+            Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+            startActivity(intent);
+            startService(serviceIntent);
         }
 
     }

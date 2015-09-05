@@ -43,7 +43,7 @@
             android:id="@+id/messageBodyField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Message..."
+            android:hint="@string/message_hint"
             android:textSize="14sp"
             android:textColor="@android:color/black"
             android:layout_marginRight="10dp"
@@ -52,7 +52,7 @@
             android:background="@android:color/white"
             android:layout_alignBottom="@+id/sendButton"
             android:layout_toLeftOf="@+id/sendButton"
-            android:layout_toStartOf="@+id/sendButton"/>
+            android:layout_toStartOf="@+id/sendButton" />
 
         <Button
             android:id="@+id/sendButton"

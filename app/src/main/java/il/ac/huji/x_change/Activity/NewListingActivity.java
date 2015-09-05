@@ -46,6 +46,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,11 +59,11 @@ import il.ac.huji.x_change.Model.CurrencyDataSource;
 import il.ac.huji.x_change.Model.CurrencyItem;
 import il.ac.huji.x_change.R;
 
-public class NewConversionActivity extends AppCompatActivity implements
+public class NewListingActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
 
-    private static final String LOG_TAG = "NewConversionActivity";
+    private static final String LOG_TAG = "NewListingActivity";
     private static final int GOOGLE_API_CLIENT_ID = 0;
 
     private static final int CURRENT_LOCATION = 0;
@@ -89,7 +90,7 @@ public class NewConversionActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_conversion);
+        setContentView(R.layout.activity_new_listing);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -109,7 +110,7 @@ public class NewConversionActivity extends AppCompatActivity implements
         db.open();
 
         //build google api client
-        mGoogleApiClient = new GoogleApiClient.Builder(NewConversionActivity.this)
+        mGoogleApiClient = new GoogleApiClient.Builder(NewListingActivity.this)
                 .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
@@ -127,7 +128,7 @@ public class NewConversionActivity extends AppCompatActivity implements
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 EditText toAmount = (EditText) findViewById(R.id.currency_amount_to);
                 if (rate.compareTo(ERROR) != 0 && !s.toString().equals("")) {
-                    toAmount.setText(rate.multiply(new BigDecimal(s.toString())).toString());
+                    toAmount.setText(rate.multiply(new BigDecimal(s.toString())).setScale(0, RoundingMode.HALF_UP).toString());
                 }
             }
 
@@ -152,7 +153,7 @@ public class NewConversionActivity extends AppCompatActivity implements
                 Log.d("s is", s.toString().trim());
                 if (!from.equals("") && !s.toString().equals("")) {
                     Log.d("From", "From not empty!");
-                    yourRate.setText(new BigDecimal(s.toString()).divide(new BigDecimal(from), 4, BigDecimal.ROUND_HALF_UP).toString());
+                    yourRate.setText(new BigDecimal(s.toString()).divide(new BigDecimal(from), 4, RoundingMode.HALF_UP).toString());
                 } else {
                     Log.d("From", "From is empty!");
                     yourRate.setText("0.00");
@@ -260,7 +261,7 @@ public class NewConversionActivity extends AppCompatActivity implements
 
                 //Get to
                 TextInputLayout toAmountTIL = (TextInputLayout) findViewById(R.id.currency_amount_to_wrapper);
-                String toAmount = toAmountTIL.getEditText().toString();
+                String toAmount = toAmountTIL.getEditText().getText().toString();
                 TextView toCodeTV = (TextView) findViewById(R.id.currency_code_to);
                 String toCode = toCodeTV.getText().toString();
                 CurrencyItem toCurrency = db.getCurrencyByCode(toCode);
@@ -289,14 +290,13 @@ public class NewConversionActivity extends AppCompatActivity implements
                 }
 
                 ParseObject parseObj = new ParseObject("Suggestions");
-                parseObj.put("user", ParseUser.getCurrentUser().getObjectId());
+                parseObj.put("createdBy", ParseUser.getCurrentUser());
                 parseObj.put("fromAmount", new BigDecimal(fromAmount));
                 parseObj.put("fromCurrency", fromCurrency.getCode());
                 parseObj.put("toAmount", new BigDecimal(toAmount));
                 parseObj.put("toCurrency", toCurrency.getCode());
                 ParseGeoPoint point = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
                 parseObj.put("location", point);
-                parseObj.put("rating", ParseUser.getCurrentUser().getInt("rating"));
                 parseObj.saveInBackground();
                 finish();
             }
@@ -391,7 +391,7 @@ public class NewConversionActivity extends AppCompatActivity implements
                                     String from = fromAmount.getText().toString();
                                     if (!from.isEmpty()) {
                                         EditText toAmount = (EditText) findViewById(R.id.currency_amount_to);
-                                        toAmount.setText(rate.multiply(new BigDecimal(from)).toString());
+                                        toAmount.setText(rate.multiply(new BigDecimal(from).setScale(0, RoundingMode.HALF_UP)).toString());
                                     }
                                 }
                             }
@@ -441,8 +441,8 @@ public class NewConversionActivity extends AppCompatActivity implements
             }
             // Selecting the first object buffer.
             final Place place = places.get(0);
-            double latitude = mLastLocation.getLatitude();
-            double longitude = mLastLocation.getLongitude();
+            double latitude = place.getLatLng().latitude;
+            double longitude = place.getLatLng().longitude;
             location.setLatitude(latitude);
             location.setLongitude(longitude);
         }
@@ -479,19 +479,6 @@ public class NewConversionActivity extends AppCompatActivity implements
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        db = new CurrencyDataSource(this);
-        db.open();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        db.close();
     }
 
     @Override

@@ -8,20 +8,25 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar" >
+
     <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/ic_account_circle_black_48dp"
-        android:layout_below="@id/toolbar"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_account_circle_black_48dp" />
 
     <TextView android:id="@+id/profile_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_image"
         android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
         android:textSize="25sp"
         android:text="@string/profile_name"/>
 
@@ -30,7 +35,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_user_name"
         android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
         android:textSize="25sp"
         android:text="@string/profile_email"/>
 
+    <TextView android:id="@+id/profile_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_email"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:textSize="25sp"
+        android:text="@string/profile_rating"/>
+
+    </RelativeLayout>
 </RelativeLayout>

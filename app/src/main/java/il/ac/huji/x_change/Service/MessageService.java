@@ -30,7 +30,8 @@ public class MessageService extends Service implements SinchClientListener {
     private SinchClient sinchClient = null;
     private MessageClient messageClient = null;
     private LocalBroadcastManager broadcaster;
-    private Intent broadcastIntent = new Intent("il.ac.huji.x_change.Activity.ListUsersActivity");
+    private Intent broadcastIntent = new Intent("il.ac.huji.x_change.Activity.MainActivity");
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -40,8 +41,9 @@ public class MessageService extends Service implements SinchClientListener {
         ENVIRONMENT = getResources().getString(R.string.sinch_hostname);
 
         //get the current user id from Parse
-        String currentUserId = ParseUser.getCurrentUser().getObjectId();
-        if (currentUserId != null && !isSinchClientStarted()) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null && !isSinchClientStarted()) {
+            String currentUserId = currentUser.getObjectId();
             startSinchClient(currentUserId);
         }
         broadcaster = LocalBroadcastManager.getInstance(this);
@@ -67,6 +69,10 @@ public class MessageService extends Service implements SinchClientListener {
         //messaging is "turned-on", but calling is not
         sinchClient.setSupportMessaging(true);
         sinchClient.setSupportActiveConnectionInBackground(true);
+
+        //push notifications is "turned-on"
+        sinchClient.setSupportPushNotifications(true);
+        sinchClient.setSupportManagedPush(true);
 
         sinchClient.checkManifest();
         sinchClient.start();

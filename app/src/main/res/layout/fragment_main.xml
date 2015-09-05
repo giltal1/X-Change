@@ -39,4 +39,5 @@
             app:borderWidth="0dp" />
 
     </android.support.design.widget.CoordinatorLayout>
+
 </FrameLayout>

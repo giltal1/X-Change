@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group>
 
     <item
         android:id="@+id/nav_item_main"
@@ -10,10 +10,16 @@
         android:title="@string/nav_item_main" />
 
     <item
+        android:id="@+id/nav_item_my_listings"
+        android:checked="false"
+        android:icon="@drawable/ic_assignment_turned_in_black_24dp"
+        android:title="@string/nav_item_my_listings" />
+
+    <item
         android:id="@+id/nav_item_new_conversion"
         android:checked="false"
         android:icon="@drawable/ic_add_circle_black_24dp"
-        android:title="@string/nav_item_new_conversion" />
+        android:title="@string/nav_item_new_listing" />
 
     <item
         android:id="@+id/nav_item_messages"

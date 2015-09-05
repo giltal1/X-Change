@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="il.ac.huji.x_change.Activity.NewConversionActivity">
+    tools:context="il.ac.huji.x_change.Activity.NewListingActivity">
 
     <include
         android:id="@+id/toolbar"
@@ -27,7 +27,8 @@
                 android:hint="@string/from"
                 android:textSize="30sp"
                 android:inputType="numberDecimal|phone"
-                android:digits="0123456789." />
+                android:digits="0123456789"
+                android:singleLine="true" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -77,7 +78,8 @@
                 android:hint="@string/to"
                 android:textSize="30sp"
                 android:inputType="numberDecimal|phone"
-                android:digits="0123456789."/>
+                android:digits="0123456789"
+                android:singleLine="true" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -112,6 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_to"
+        android:layout_marginTop="10dp"
         android:text="@string/official_rate"/>
 
     <TextView android:id="@+id/txt_your_rate"
@@ -120,6 +123,7 @@
         android:layout_below="@id/layout_to"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
         android:text="@string/your_rate"/>
 
     <TextView android:id="@+id/official_rate"
@@ -142,22 +146,36 @@
         android:layout_height="50dp"
         android:layout_below="@id/layout_to"
         android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
         android:contentDescription="@string/swap_desc"
-        android:src="@drawable/swap"/>
+        android:src="@drawable/ic_swap_vertical_circle_black_24dp"/>
+
+    <TextView
+        android:id="@+id/txt_choose_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/swap"
+        android:layout_marginTop="40dp"
+        android:text="@string/choose_location"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
 
     <ImageView android:id="@+id/img_location"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_below="@id/swap"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txt_choose_location"
         android:layout_margin="20dp"
         android:contentDescription="@string/location_desc"
-        android:src="@drawable/marker"/>
+        android:src="@drawable/ic_location_on_black_24dp" />
 
     <Spinner android:id="@+id/spinner_location"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img_location"
+        android:layout_toRightOf="@id/img_location"
+        android:layout_toEndOf="@id/img_location"
+        android:layout_below="@+id/txt_choose_location"
+        android:layout_margin="20dp"
         android:layout_centerHorizontal="true" />
 
     <AutoCompleteTextView
@@ -165,6 +183,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/spinner_location"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
         android:hint="@string/actv_hint" />
 
     <Button

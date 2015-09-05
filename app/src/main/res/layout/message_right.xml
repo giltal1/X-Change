@@ -32,8 +32,7 @@
             android:paddingBottom="6dp"
             android:textSize="12sp"
             android:text=""
-            android:layout_alignBottom="@+id/txtSender"
-            />
+            android:layout_alignBottom="@+id/txtSender" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -41,8 +40,7 @@
             android:layout_below="@+id/txtSender"
             android:layout_alignParentRight="true"
             android:padding="12dp"
-            android:background="@drawable/purple_bubble"
-            >
+            android:background="@drawable/green_bubble">
 
             <TextView
                 android:id="@+id/txtMessage"

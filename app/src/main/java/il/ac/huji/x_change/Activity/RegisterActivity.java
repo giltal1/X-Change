@@ -91,7 +91,6 @@ public class RegisterActivity extends ActionBarActivity {
                 user.setUsername(email);
                 user.setPassword(password);
                 user.put("Name", fullName);
-                user.put("Image", null);
                 user.put("rating", 0);
 
                 user.signUpInBackground(new SignUpCallback() {
@@ -102,8 +101,10 @@ public class RegisterActivity extends ActionBarActivity {
                             Toast toast = Toast.makeText(getApplicationContext(), "sign up success",
                                     Toast.LENGTH_SHORT);
                             toast.show();
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(i);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent serviceIntent = new Intent(getApplicationContext(), MessageService.class);
+                            startActivity(intent);
+                            startService(serviceIntent);
                         } else {
                             // Sign up didn't succeed. Look at the ParseException
                             // to figure out what went wrong

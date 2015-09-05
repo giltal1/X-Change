@@ -24,6 +24,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import il.ac.huji.x_change.Model.Constants;
 import il.ac.huji.x_change.R;
 import il.ac.huji.x_change.Service.MessageService;
 
@@ -33,8 +34,7 @@ public class ListUsersActivity extends AppCompatActivity {
     private ArrayAdapter<String> namesArrayAdapter;
     private ArrayList<String> names;
     private ListView usersListView;
-    private ProgressDialog progressDialog;
-    private BroadcastReceiver receiver = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +49,6 @@ public class ListUsersActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        showSpinner();
     }
 
     //display clickable a list of all users
@@ -90,14 +88,15 @@ public class ListUsersActivity extends AppCompatActivity {
     }
 
     //open a conversation with one person
-    public void openConversation(ArrayList<String> names, int pos) {
+    public void openConversation(final ArrayList<String> names, final int pos) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("Name", names.get(pos));
         query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> user, com.parse.ParseException e) {
+            public void done(List<ParseUser> user, ParseException e) {
                 if (e == null) {
                     Intent intent = new Intent(getApplicationContext(), MessagingActivity.class);
-                    intent.putExtra("RECIPIENT_ID", user.get(0).getObjectId());
+                    intent.putExtra(Constants.RECIPIENT_ID, user.get(0).getObjectId());
+                    intent.putExtra(Constants.RECIPIENT_NAME, names.get(pos));
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(),
@@ -108,41 +107,12 @@ public class ListUsersActivity extends AppCompatActivity {
         });
     }
 
-    //show a loading spinner while the sinch client starts
-    private void showSpinner() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Loading");
-        progressDialog.setMessage("Please wait...");
-        progressDialog.show();
 
-        //broadcast receiver to listen for the broadcast from MessageService
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Boolean success = intent.getBooleanExtra("success", false);
-                progressDialog.dismiss();
-                if (!success) {
-                    Log.d(getCallingActivity().toString(), "Messaging service failed to start");
-                }
-                else {
-                    Log.d(getCallingActivity().toString(), "Messaging service started");
-                }
-            }
-        };
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("il.ac.huji.x_change.Activity.ListUsersActivity"));
-    }
 
     @Override
     public void onResume() {
         setConversationsList();
         super.onResume();
-    }
-
-    @Override
-    public void onDestroy() {
-        stopService(new Intent(this, MessageService.class));
-        super.onDestroy();
     }
 
 }

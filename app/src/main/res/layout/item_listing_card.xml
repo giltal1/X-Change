@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        card_view:cardElevation="7dp"
+        card_view:cardCornerRadius="2dp"
+        card_view:contentPadding="10dp">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/conversion_user_photo"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/ic_account_circle_black_48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                />
+
+            <TextView
+                android:id="@+id/conversion_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/conversion_user_photo"
+                android:layout_toStartOf="@+id/conversion_rating"
+                android:layout_toLeftOf="@+id/conversion_rating"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="Full Name"/>
+
+            <TextView
+                android:id="@+id/conversion_title_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="12dp"
+                android:text="100 USD"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/conversion_user_photo"
+                android:layout_toRightOf="@+id/conversion_user_photo"/>
+
+            <ImageView
+                android:id="@+id/arrow_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:paddingTop="12dp"
+                android:layout_toEndOf="@+id/conversion_title_from"
+                android:layout_toRightOf="@+id/conversion_title_from"
+                android:src="@drawable/ic_arrow_right_bold_circle_outline_black_24dp"
+                />
+
+            <TextView
+                android:id="@+id/conversion_title_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="12dp"
+                android:text="400 ILS"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/arrow_icon"
+                android:layout_toRightOf="@+id/arrow_icon"/>
+
+            <ImageView
+                android:id="@+id/navigation_image"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@id/conversion_title_from"
+                android:layout_toEndOf="@+id/conversion_user_photo"
+                android:layout_toRightOf="@+id/conversion_user_photo"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/ic_navigation_black_24dp"
+                android:rotation="45.0"
+                />
+
+            <TextView
+                android:id="@+id/conversion_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:layout_below="@id/conversion_title_from"
+                android:text="100 meters"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_toEndOf="@+id/navigation_image"
+                android:layout_toRightOf="@+id/navigation_image"/>
+
+            <TextView
+                android:id="@+id/conversion_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_below="@id/conversion_distance"
+                android:text="rating: 150"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_toEndOf="@+id/conversion_user_photo"
+                android:layout_toRightOf="@+id/conversion_user_photo"/>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

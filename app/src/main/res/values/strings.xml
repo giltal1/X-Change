@@ -5,6 +5,9 @@
     <!--Google loaction id-->
     <string name="google_location_key">AIzaSyAHnbJ3_2CS1FslO8zJRyR1wl4oeTV2Cw0</string>
 
+    <!--Google Project number-->
+    <string name="project_number">762235396241</string>
+    
     <!-- Parse id's-->
     <string name="parse_app_id">MEmquUCRhxXbUAmfym1Uvjl56OKOyMMGPVnnzRFP</string>
     <string name="parse_client_id">lrdxbTU48ZRQV8wGbUHdHgHR60z8fmIjkNLZrtpC</string>
@@ -19,6 +22,16 @@
 
     <!--openexchangerates id-->
     <string name="openexchangerates_key">44f9466047dc4280b53b883b0b9fd23d</string>
+
+
+    <!-- Splash screen-->
+    <string name="connect_dialog_title">Connection failed</string>
+    <string name="connect_dialog_msg">This application requires network access. Enable mobile network or Wi-Fi to access the application</string>
+    <string name="connect_dialog_btn">Wifi Settings</string>
+
+    <string name="location_dialog_title">Turn on location</string>
+    <string name="location_dialog_msg">This application requires Location access. Enable GPS to access the application.</string>
+    <string name="location_dialog_btn">GPS Settings</string>
 
     <!-- Login & Registration strings-->
     <string name="link_to_register_text">New to X-Change? Register here</string>
@@ -37,10 +50,11 @@
     <!-- General strings-->
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="action_search">Search</string>
+    <string name="action_filter">Filter</string>
     <string name="action_sort">Sort</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="delete">Delete</string>
 
 
     <!--location spinner headers-->
@@ -57,7 +71,8 @@
 
     <!-- nav item headers -->
     <string name="nav_item_main">Main</string>
-    <string name="nav_item_new_conversion">New Conversion</string>
+    <string name="nav_item_my_listings">My Listings</string>
+    <string name="nav_item_new_listing">New Listing</string>
     <string name="nav_item_messages">Messages</string>
     <string name="nav_item_profile">Profile</string>
     <string name="nav_item_about">About</string>
@@ -70,7 +85,8 @@
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_main</item>
-        <item>@string/nav_item_new_conversion</item>
+        <item>@string/nav_item_my_listings</item>
+        <item>@string/nav_item_new_listing</item>
         <item>@string/nav_item_messages</item>
         <item>@string/nav_item_profile</item>
         <item>@string/nav_item_about</item>
@@ -85,21 +101,35 @@
     <string name="title_activity_splash_screen">Splash Screen</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_register">Register</string>
-    <string name="title_sort_dialog">Sort By...</string>
-    <string name="title_search_dialog">Filter By...</string>
+    <string name="title_sort_dialog">Sort By&#8230;</string>
+    <string name="title_filter_dialog">Filter By&#8230;</string>
 
     <string name="app_default">App Default</string>
     <string name="distance">Distance</string>
     <string name="rating">Rating</string>
     <string name="no_selection">Select an option please</string>
 
-    <string name="from_currency">From Currency</string>
-    <string name="to_currency">To Currency</string>
+    <!--Main Fragment-->
+
+    <string name="chat_dialog_title">Do you want to talk with </string>
 
     <string-array name="sort_options">
         <item>@string/app_default</item>
         <item>@string/distance</item>
         <item>@string/rating</item>
+    </string-array>
+
+    <string name="from_currency">From Currency</string>
+    <string name="to_currency">To Currency</string>
+
+    <string name="no_filter">No Filter</string>
+    <string name="max_distance">Max Distance</string>
+    <string name="min_rating">Min Rating</string>
+
+    <string-array name="filter_options">
+        <item>@string/no_filter</item>
+        <item>@string/max_distance</item>
+        <item>@string/min_rating</item>
     </string-array>
 
     <!-- conversion card item -->
@@ -126,17 +156,27 @@
     <!-- profile Activity-->
     <string name="profile_name">Name: </string>
     <string name="profile_email">Email: </string>
+    <string name="profile_rating">Rating: </string>
+    <string name="choose_action">Choose Action</string>
+    <string name="btn_remove">Remove</string>
+    <string name="btn_add">Add / Replace</string>
 
     <!--About Fragment-->
-    <string name="about_description">X-Change is a new app who revolutionize the way we trade money\n
-    more details coming soon...</string>
+    <string name="about_description">Currency exchange has never been easier.\n
+        X-Change is a new app which revolutionise the way we trade money.\n
+        Starting now you can exchange money directly with each other, and cut the currency exchange stores commissions.\n\n
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+        This app was built as part of POST-PC class of The Hebrew University in Jersualem\n
+        2015</string>
+
+    <!--Chat-->
+    <string name="message_hint">Message...</string>
+    <string name="action_rate">Rate</string>
+
     <string name="title_activity_currency">Choose Currency</string>
-    <string name="title_activity_currency_item_adapter">CurrencyItemAdapter</string>
-    <string name="title_activity_new_conversion">New Conversion</string>
+    <string name="title_activity_my_listings">My Listings</string>
+    <string name="title_activity_new_listing">New Listing</string>
     <string name="title_activity_profile">My Profile</string>
-    <string name="title_activity_messaging">MessagingActivity</string>
-    <string name="title_activity_list_users">ListUsersActivity</string>
+    <string name="title_activity_list_users">Chat</string>
+
 </resources>

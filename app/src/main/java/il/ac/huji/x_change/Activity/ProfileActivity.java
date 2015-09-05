@@ -1,11 +1,14 @@
 package il.ac.huji.x_change.Activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,11 +22,14 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import il.ac.huji.x_change.Model.Constants;
 import il.ac.huji.x_change.R;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -47,10 +53,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         TextView name = (TextView) findViewById(R.id.profile_user_name);
         TextView email = (TextView) findViewById(R.id.profile_email);
+        TextView rating = (TextView) findViewById(R.id.profile_rating);
 
         if (currentUser != null) {
-            name.append(currentUser.get("Name").toString());
-            email.append(currentUser.getUsername().toString());
+            name.append(" " + currentUser.get("Name").toString());
+            email.append(" " + currentUser.getUsername());
+            rating.append(" " + currentUser.get("rating").toString());
             if (currentUser.get("Image") != null) {
                 ParseFile file =  (ParseFile) currentUser.get("Image");
                 file.getDataInBackground(new GetDataCallback() {
@@ -72,15 +80,34 @@ public class ProfileActivity extends AppCompatActivity {
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, SELECT_PHOTO);
+                final Context context = v.getContext();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(R.string.choose_action);
+                builder.setPositiveButton(R.string.btn_add, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int position) {
+                                Intent intent = new Intent(Intent.ACTION_PICK);
+                                intent.setType("image/*");
+                                startActivityForResult(intent, SELECT_PHOTO);
+                            }
+                        }
+
+                );
+                builder.setNegativeButton(R.string.btn_remove, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                currentUser.remove("Image");
+                                currentUser.saveInBackground();
+                                CircleImageView image = (CircleImageView) findViewById(R.id.profile_image);
+                                image.setImageResource(R.drawable.ic_account_circle_black_48dp);
+                                dialog.dismiss();
+                            }
+                        }
+                );
+                builder.show();
+
             }
         });
 
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {

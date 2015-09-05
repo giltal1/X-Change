@@ -16,25 +16,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
-import il.ac.huji.x_change.Adapter.ConversionItemAdapter;
+import il.ac.huji.x_change.Adapter.ListingItemAdapter;
+import il.ac.huji.x_change.Dialog.SortDialogFragment;
 import il.ac.huji.x_change.Model.Constants;
-import il.ac.huji.x_change.Model.ConversionItem;
+import il.ac.huji.x_change.Model.ListingItem;
 import il.ac.huji.x_change.Model.CurrencyDataSource;
 import il.ac.huji.x_change.Model.CurrencyItem;
 import il.ac.huji.x_change.R;
@@ -42,20 +42,18 @@ import il.ac.huji.x_change.R;
 public class MainFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String TAG = MainFragment.class.getSimpleName();
-    private static final int REQ_SORT_CODE = 1;
-    private static final int REQ_SEARCH_CODE = 2;
-
     private static int SORT_PARAM = Constants.SORT_DEFAULT;
+    private static int FILTER_PARAM = Constants.FILTER_NONE;
+    private static int FILTER_VALUE = 0;
 
-    private List<ConversionItem> data;
-    private ConversionItemAdapter adapter;
+    private List<ListingItem> data;
+    private ListingItemAdapter adapter;
     private RecyclerView rv;
     private SwipeRefreshLayout swipeRefreshLayout;
     private CurrencyDataSource db;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-
+    private int distanceRandomFactor;
     private Location location = new Location("");
 
     public MainFragment() {
@@ -66,7 +64,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -77,8 +74,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         rv = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        data = new ArrayList<ConversionItem>();
-        adapter = new ConversionItemAdapter(data);
+        data = new ArrayList<ListingItem>();
+        adapter = new ListingItemAdapter(data, getActivity());
         rv.setAdapter(adapter);
 
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
@@ -93,10 +90,13 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 .addApi(LocationServices.API)
                 .build();
 
+        Random random = new Random();
+        distanceRandomFactor = random.nextInt(Constants.DISTANCE_FACTOR) + 1;
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                fetchSuggestions(SORT_PARAM);
+                fetchListings(SORT_PARAM, FILTER_PARAM, FILTER_VALUE);
             }
         });
 
@@ -104,7 +104,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
-                fetchSuggestions(SORT_PARAM);
+                fetchListings(SORT_PARAM, FILTER_PARAM, FILTER_VALUE);
             }
         });
 
@@ -112,7 +112,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NewConversionActivity.class);
+                Intent intent = new Intent(getActivity(), NewListingActivity.class);
                 startActivity(intent);
             }
         });
@@ -120,33 +120,32 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         return rootView;
     }
 
-    private void fetchSuggestions(final int order) {
+    private void fetchListings(final int order, final int filter, final int filterValue) {
         data.clear();
         adapter.notifyDataSetChanged();
         swipeRefreshLayout.setColorSchemeResources(R.color.red, R.color.yellow, R.color.green, R.color.blue);
         swipeRefreshLayout.setRefreshing(true);
-        ParseQuery query = ParseQuery.getQuery("Suggestions");
-        ParseGeoPoint userLocation;
-        switch (order) {
-            case Constants.SORT_DEFAULT:
-                userLocation = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
-                query.whereNear("location", userLocation);
-                query.addDescendingOrder("rating");
-                break;
-            case Constants.SORT_DISTANCE:
-                userLocation = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
-                query.whereNear("location", userLocation);
-                break;
-            case Constants.SORT_RATING:
-                query.addAscendingOrder("rating");
-                break;
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Suggestions");
+        query.whereNotEqualTo("createdBy", ParseUser.getCurrentUser());
+//        ParseGeoPoint userLocation = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
+//        query.whereNear("location", userLocation);
+        if (order == Constants.SORT_RATING) {
+            query.addDescendingOrder("rating");
         }
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> suggestions, ParseException e) {
+            public void done(List<ParseObject> listings, ParseException e) {
                 if (e == null) {
-                    Log.d("suggestions", "Retrieved " + suggestions.size() + " scores");
-                    for (ParseObject obj : suggestions) {
+                    Log.d("suggestions", "Retrieved " + listings.size() + " scores");
+                    for (ParseObject obj : listings) {
+                        ParseUser user = null;
+                        try {
+                            user = obj.getParseUser("createdBy").fetchIfNeeded();
+                        }
+                        catch (ParseException ex) {
+                            Log.e(getClass().getSimpleName(), "Error: " + ex.getMessage());
+                        }
                         String fromAmount = obj.get("fromAmount").toString();
                         CurrencyItem fromCurrency = db.getCurrencyByCode(obj.get("fromCurrency").toString());
                         String toAmount = obj.get("toAmount").toString();
@@ -154,20 +153,47 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                         Location locationOffer = new Location("");
                         locationOffer.setLatitude(obj.getParseGeoPoint("location").getLatitude());
                         locationOffer.setLongitude(obj.getParseGeoPoint("location").getLongitude());
-                        float distance = location.distanceTo(locationOffer);
-                        int rating = obj.getInt("rating");
+                        float distance = location.distanceTo(locationOffer) + distanceRandomFactor;
 
-                        ConversionItem item = new ConversionItem(fromAmount, fromCurrency, toAmount, toCurrency, distance, rating);
+                        ListingItem item = new ListingItem(user, fromAmount, fromCurrency, toAmount, toCurrency, distance);
                         data.add(item);
                     }
 
-                    if (order == Constants.SORT_DISTANCE)
-                        Collections.sort(data, ConversionItem.Distance);
+                    switch (order) {
+                        case Constants.SORT_DEFAULT:
+                            Collections.sort(data, ListingItem.Default);
+                            break;
+                        case Constants.SORT_DISTANCE:
+                            Collections.sort(data, ListingItem.Distance);
+                            break;
+                    }
+
+
+//                    switch (filter) {
+//                        case Constants.FILTER_NONE:
+//                            break;
+//                        case Constants.FILTER_BY_DISTANCE:
+//                            for (Iterator<ListingItem> iter = data.listIterator(); iter.hasNext();) {
+//                                ListingItem item = iter.next();
+//                                if (item.getDistance() > FILTER_VALUE)
+//                                    iter.remove();
+//                            }
+//                            break;
+//                        case Constants.FILTER_BY_RATING:
+//                            for (Iterator<ListingItem> iter = data.listIterator(); iter.hasNext();) {
+//                                ListingItem item = iter.next();
+//                                if (item.getUserRating() < FILTER_VALUE)
+//                                    iter.remove();
+//                            }
+//                            break;
+//                        default:
+//                            return;
+//                    }
                     adapter.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);
 
                 } else {
-                    Log.e("suggestions", "Error: " + e.getMessage());
+                    Log.e("listings", "Error: " + e.getMessage());
                 }
             }
         });
@@ -182,8 +208,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             double longitude = mLastLocation.getLongitude();
             location.setLatitude(latitude);
             location.setLongitude(longitude);
-//            Toast.makeText(getActivity(), "Latitude: " + latitude + ", Longitude: " + longitude,
-//                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -194,25 +218,26 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        MyDialogFragment dialogFragment = new MyDialogFragment();
         switch (item.getItemId()) {
             case R.id.action_sort:
-                dialogFragment.setTargetFragment(MainFragment.this, REQ_SORT_CODE);
-                break;
-            case R.id.action_search:
-                dialogFragment.setTargetFragment(MainFragment.this, REQ_SEARCH_CODE);
-                break;
+                SortDialogFragment sortDialog = new SortDialogFragment();
+                sortDialog.setTargetFragment(MainFragment.this, Constants.REQ_SORT_CODE);
+                sortDialog.show(getFragmentManager(), "");
+                sortDialog.setCancelable(false);
+                return true;
+//            case R.id.action_filter:
+//                FilterDialogFragment filterDialog = new FilterDialogFragment();
+//                filterDialog.setTargetFragment(MainFragment.this, Constants.REQ_FILTER_CODE);
+//                filterDialog.show(getFragmentManager(), "");
+//                filterDialog.setCancelable(false);
+//                return true;
         }
-        dialogFragment.show(getFragmentManager(), "");
-        dialogFragment.setCancelable(false);
-        return true;
+        return false;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Toast.makeText(getActivity(), "Result: " + resultCode,
-                Toast.LENGTH_SHORT).show();
-        if (requestCode == REQ_SORT_CODE) {
+        if (requestCode == Constants.REQ_SORT_CODE) {
             switch (resultCode) {
                 case Constants.SORT_DEFAULT:
                     SORT_PARAM = resultCode;
@@ -226,13 +251,40 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 default:
                     return;
             }
-            fetchSuggestions(SORT_PARAM);
+            fetchListings(SORT_PARAM, FILTER_PARAM, FILTER_VALUE);
+            return;
         }
-        if (requestCode == REQ_SEARCH_CODE) {
-            //fill later
-        }
+//        if (requestCode == Constants.REQ_FILTER_CODE) {
+//            TextDialog textDialog;
+//            switch (resultCode) {
+//                case Constants.FILTER_NONE:
+//                    FILTER_PARAM = requestCode;
+//                    fetchListings(SORT_PARAM, FILTER_PARAM, FILTER_VALUE);
+//                    return;
+//                case Constants.SORT_DISTANCE:
+//                    FILTER_PARAM = requestCode;
+//                    textDialog = new TextDialog();
+//                    textDialog.setTargetFragment(MainFragment.this, Constants.REQ_FILTER_DISTANCE_CODE);
+//                    textDialog.show(getFragmentManager(), "");
+//                    textDialog.setCancelable(false);
+//                    break;
+//                case Constants.FILTER_BY_RATING:
+//                    FILTER_PARAM = requestCode;
+//                    textDialog = new TextDialog();
+//                    textDialog.setTargetFragment(MainFragment.this, Constants.REQ_FILTER_RATING_CODE);
+//                    textDialog.show(getFragmentManager(), "");
+//                    textDialog.setCancelable(false);
+//                    break;
+//                default:
+//                    return;
+//            }
+//        }
+//        if (requestCode == Constants.REQ_FILTER_DISTANCE_CODE ||
+//                requestCode == Constants.REQ_FILTER_RATING_CODE) {
+//            FILTER_VALUE = resultCode;
+//            fetchListings(SORT_PARAM, FILTER_PARAM, FILTER_VALUE);
+//        }
     }
-
 
     @Override
     public void onStart() {
@@ -240,19 +292,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        db = new CurrencyDataSource(getActivity());
-        db.open();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        db.close();
     }
 
     @Override
@@ -265,7 +304,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = "
+        Log.i(getClass().getSimpleName(), "Connection failed: ConnectionResult.getErrorCode() = "
                 + result.getErrorCode());
     }
 
