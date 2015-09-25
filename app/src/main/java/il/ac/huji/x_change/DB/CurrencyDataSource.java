@@ -1,4 +1,4 @@
-package il.ac.huji.x_change.Model;
+package il.ac.huji.x_change.DB;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 
 import il.ac.huji.x_change.DB.MySQLiteHelper;
+import il.ac.huji.x_change.Model.CurrencyItem;
 
 /**
  * Created by Gil on 26/07/2015.

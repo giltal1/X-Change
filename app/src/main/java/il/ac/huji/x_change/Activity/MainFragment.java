@@ -35,7 +35,7 @@ import il.ac.huji.x_change.Adapter.ListingItemAdapter;
 import il.ac.huji.x_change.Dialog.SortDialogFragment;
 import il.ac.huji.x_change.Model.Constants;
 import il.ac.huji.x_change.Model.ListingItem;
-import il.ac.huji.x_change.Model.CurrencyDataSource;
+import il.ac.huji.x_change.DB.CurrencyDataSource;
 import il.ac.huji.x_change.Model.CurrencyItem;
 import il.ac.huji.x_change.R;
 
@@ -128,8 +128,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Suggestions");
         query.whereNotEqualTo("createdBy", ParseUser.getCurrentUser());
-//        ParseGeoPoint userLocation = new ParseGeoPoint(location.getLatitude(),location.getLongitude());
-//        query.whereNear("location", userLocation);
         if (order == Constants.SORT_RATING) {
             query.addDescendingOrder("rating");
         }
@@ -167,28 +165,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                             Collections.sort(data, ListingItem.Distance);
                             break;
                     }
-
-
-//                    switch (filter) {
-//                        case Constants.FILTER_NONE:
-//                            break;
-//                        case Constants.FILTER_BY_DISTANCE:
-//                            for (Iterator<ListingItem> iter = data.listIterator(); iter.hasNext();) {
-//                                ListingItem item = iter.next();
-//                                if (item.getDistance() > FILTER_VALUE)
-//                                    iter.remove();
-//                            }
-//                            break;
-//                        case Constants.FILTER_BY_RATING:
-//                            for (Iterator<ListingItem> iter = data.listIterator(); iter.hasNext();) {
-//                                ListingItem item = iter.next();
-//                                if (item.getUserRating() < FILTER_VALUE)
-//                                    iter.remove();
-//                            }
-//                            break;
-//                        default:
-//                            return;
-//                    }
                     adapter.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);
 
@@ -225,12 +201,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 sortDialog.show(getFragmentManager(), "");
                 sortDialog.setCancelable(false);
                 return true;
-//            case R.id.action_filter:
-//                FilterDialogFragment filterDialog = new FilterDialogFragment();
-//                filterDialog.setTargetFragment(MainFragment.this, Constants.REQ_FILTER_CODE);
-//                filterDialog.show(getFragmentManager(), "");
-//                filterDialog.setCancelable(false);
-//                return true;
         }
         return false;
     }
@@ -254,36 +224,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             fetchListings(SORT_PARAM, FILTER_PARAM, FILTER_VALUE);
             return;
         }
-//        if (requestCode == Constants.REQ_FILTER_CODE) {
-//            TextDialog textDialog;
-//            switch (resultCode) {
-//                case Constants.FILTER_NONE:
-//                    FILTER_PARAM = requestCode;
-//                    fetchListings(SORT_PARAM, FILTER_PARAM, FILTER_VALUE);
-//                    return;
-//                case Constants.SORT_DISTANCE:
-//                    FILTER_PARAM = requestCode;
-//                    textDialog = new TextDialog();
-//                    textDialog.setTargetFragment(MainFragment.this, Constants.REQ_FILTER_DISTANCE_CODE);
-//                    textDialog.show(getFragmentManager(), "");
-//                    textDialog.setCancelable(false);
-//                    break;
-//                case Constants.FILTER_BY_RATING:
-//                    FILTER_PARAM = requestCode;
-//                    textDialog = new TextDialog();
-//                    textDialog.setTargetFragment(MainFragment.this, Constants.REQ_FILTER_RATING_CODE);
-//                    textDialog.show(getFragmentManager(), "");
-//                    textDialog.setCancelable(false);
-//                    break;
-//                default:
-//                    return;
-//            }
-//        }
-//        if (requestCode == Constants.REQ_FILTER_DISTANCE_CODE ||
-//                requestCode == Constants.REQ_FILTER_RATING_CODE) {
-//            FILTER_VALUE = resultCode;
-//            fetchListings(SORT_PARAM, FILTER_PARAM, FILTER_VALUE);
-//        }
     }
 
     @Override

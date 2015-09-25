@@ -1,6 +1,5 @@
 package il.ac.huji.x_change.Activity;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +11,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 import il.ac.huji.x_change.Adapter.CurrencyItemAdapter;
-import il.ac.huji.x_change.Model.CurrencyDataSource;
+import il.ac.huji.x_change.DB.CurrencyDataSource;
 import il.ac.huji.x_change.Model.CurrencyItem;
 import il.ac.huji.x_change.R;
 

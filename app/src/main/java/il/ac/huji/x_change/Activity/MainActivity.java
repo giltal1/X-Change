@@ -179,27 +179,6 @@ public class MainActivity extends AppCompatActivity {
         mail.setText(currentUser.getUsername());
 
         fetchPhoto();
-//        if (currentUser.get("Image") != null) {
-//            ParseFile file =  (ParseFile) currentUser.get("Image");
-//            file.getDataInBackground(new GetDataCallback() {
-//                @Override
-//                public void done(byte[] bytes, ParseException e) {
-//                    if (e == null) {
-//                        Log.d("in GetDataCallback", "load photo");
-//                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                        CircleImageView image = (CircleImageView) findViewById(R.id.drawer_profile_image);
-//                        image.setImageBitmap(bitmap);
-//                    }
-//                    else {
-//                        Log.e("GetDataInBackground", e.getMessage());
-//                    }
-//                }
-//            });
-//        }
-//        else {
-//            Log.d("current user", "image is null");
-//        }
-
         CircleImageView image = (CircleImageView) findViewById(R.id.drawer_profile_image);
         image.setOnClickListener(new View.OnClickListener() {
             @Override

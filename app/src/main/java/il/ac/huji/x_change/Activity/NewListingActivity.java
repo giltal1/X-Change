@@ -55,7 +55,7 @@ import java.util.List;
 
 import il.ac.huji.x_change.Adapter.PlaceArrayAdapter;
 import il.ac.huji.x_change.Adapter.SpinnerAdapter;
-import il.ac.huji.x_change.Model.CurrencyDataSource;
+import il.ac.huji.x_change.DB.CurrencyDataSource;
 import il.ac.huji.x_change.Model.CurrencyItem;
 import il.ac.huji.x_change.R;
 
